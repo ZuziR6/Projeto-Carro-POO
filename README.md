@@ -6,55 +6,44 @@ Este projeto foi desenvolvido em Java utilizando conceitos de Programação Orie
 
 ## Classes
 * `Carro`: classe principal, representa o carro.
-* `Main`: classe responsável por criar o objeto e realizar os testes do projeto.
+* `Tanque`: classe responsável por representar o tanque e controlar seus litros.
+* `Main`: classe responsável por criar os objetos e realizar os testes do projeto.
 
 ## Atributos
 A classe `Carro` possui os seguintes atributos:
 
 * `modelo`: representa o modelo do carro.
-* `combustivel`: representa os litros de combustível no tanque.
+* `tanque`: representa o objeto `Tanque` associado ao carro.
 * `velocidade`: representa a velocidade atual em km/h.
 
   * Inicia em 0.
 
-Os atributos agora são privados (`private`) para proteger o estado do objeto (encapsulamento).
+A classe `Tanque` possui o seguinte atributo:
+
+* `litros`: representa os litros de combustível no tanque.
+
+Os atributos são privados (`private`) para proteger o estado do objeto.
 
 ## Construtores
-Na aula de **10/09/26**, foi criado um construtor para a classe `Carro`, definindo o atributo essencial para o nascimento do objeto: o modelo. Agora não é possível criar um `Carro` sem informar o modelo (parâmetro obrigatório).
+Na aula de **10/09/26**, foi criado um construtor para `Carro`, definindo o atributo essencial para o nascimento do objeto. Posteriormente, na aula de **17/09/26**, com a associação entre `Carro` e `Tanque`, o construtor passou a receber também um objeto `Tanque`:
 
 ```java
-public Carro(String modelo) {
-    setModelo(modelo);
+public Carro(String modelo, Tanque tanque) {
+    this.modelo = modelo;
+    this.tanque = tanque;
 }
 ```
 
-O construtor utiliza o método `setModelo()` para atribuir o valor, mantendo o acesso ao atributo em um único lugar.
-
-O `Main.java` passou a criar o objeto assim:
+A classe `Tanque` também possui construtor, e o `Main.java` cria o carro assim:
 
 ```java
-Carro carro = new Carro("Gol");
+Carro carro = new Carro("Gol", new Tanque(0));
 ```
 
 ## Métodos
 
-### getModelo()
-O método `getModelo()` retorna o modelo do carro.
-
-```java
-public String getModelo() {
-    return modelo;
-}
-```
-
-### setModelo()
-O método `setModelo(String modelo)` permite alterar o modelo do carro.
-
-```java
-public void setModelo(String modelo) {
-    this.modelo = modelo;
-}
-```
+### getModelo() e setModelo()
+Retornam e alteram o modelo do carro.
 
 ### acelerar()
 Aumenta a velocidade do carro. A quantidade deve ser maior que zero e a velocidade não pode ultrapassar 200 km/h.
@@ -67,63 +56,99 @@ public void acelerar(int quantidade) {
 }
 ```
 
-### abastecer()
-Coloca combustível no tanque. A quantidade deve ser maior que zero e o tanque não pode passar de 50 litros.
+### abastecer() (em Carro)
+O método `abastecer(int quantidade)` solicita que o objeto `Tanque` associado realize o abastecimento.
 
 ```java
 public void abastecer(int quantidade) {
-    if (quantidade > 0 && combustivel + quantidade <= 50) {
-        combustivel = combustivel + quantidade;
+    tanque.abastecer(quantidade);
+}
+```
+
+A regra de negócio do abastecimento permanece sob responsabilidade da classe `Tanque`.
+
+### getTanque()
+O método `getTanque()` retorna os litros do tanque por meio do objeto `Tanque` associado.
+
+```java
+public int getTanque() {
+    return tanque.getLitros();
+}
+```
+
+### getVelocidade()
+Retorna a velocidade atual.
+
+### getLitros()
+Pertence à classe `Tanque` e retorna os litros atuais.
+
+```java
+public int getLitros() {
+    return litros;
+}
+```
+
+### abastecer() (em Tanque)
+Pertence à classe `Tanque` e aumenta os litros.
+
+Regra de negócio:
+
+* A quantidade deve ser maior que zero.
+* O tanque não pode passar de 50 litros.
+
+```java
+public void abastecer(int quantidade) {
+    if (quantidade > 0 && litros + quantidade <= 50) {
+        litros = litros + quantidade;
     }
 }
 ```
 
-### getVelocidade() e getCombustivel()
-Retornam a velocidade atual e os litros de combustível. Não foram criados `setVelocidade()` nem `setCombustivel()` de propósito: esses valores só mudam pelos métodos `acelerar()` e `abastecer()`, que validam as regras.
+## Associação entre objetos
+Na aula de **17/09/26**, foi criada a classe `Tanque` para realizar uma associação com a classe `Carro`. O atributo que antes era um simples número (`combustivel`) passou a ser um objeto da classe `Tanque`:
 
 ```java
-public int getVelocidade() {
-    return velocidade;
-}
-
-public int getCombustivel() {
-    return combustivel;
-}
+private Tanque tanque;
 ```
 
-## Encapsulamento
-Na aula de **10/09/26**, os atributos de `Carro` passaram de `public` para `private`. Agora o `Main` não consegue mais fazer `carro.velocidade = 500`, e o acesso é feito por métodos que protegem as regras de negócio.
+Essa associação permite que o `Carro` utilize os comportamentos do `Tanque`, enquanto o `Tanque` fica responsável por controlar seus litros e suas regras de negócio. O atributo `combustivel` e o método `getCombustivel()` deixaram de existir em `Carro`, pois essa informação agora pertence ao `Tanque`.
 
 ## Testes
-O `Main.java` foi atualizado para criar o objeto com o novo construtor e continua testando valores inválidos, que são ignorados pelas regras dos métodos.
+O `Main.java` foi atualizado para criar o `Carro` com um objeto `Tanque` associado e testar abastecimento válido e inválido.
 
 Saída obtida:
 
 ```text
 Modelo: Gol
 Velocidade: 50 km/h
-Combustivel: 30 L
+Tanque: 30 L
 Velocidade apos teste invalido: 50 km/h
-Combustivel apos teste invalido: 30 L
+Tanque apos teste invalido: 30 L
 ```
 
 ## Projeto Carro - Pergunta de Reflexão "Clean Code" - Aula 10/09/26
 
 **Pensando no mundo real e no Clean Code: Por que é um erro gravíssimo clicar em "Gerar Getters e Setters para tudo" automaticamente na sua IDE? Como as nossas decisões protegem o sistema de fraudes e falhas de lógica?**
 
-Gerar getters e setters para tudo pode causar um sério problema de informações não reais. Nem toda informação do objeto deve ser alterada livremente. Se existisse um `setCombustivel()` público, mesmo com o atributo privado, qualquer pessoa poderia colocar 500 litros num tanque de 50, invalidando a lógica do sistema.
+Gerar getters e setters para tudo pode causar um sério problema de informações não reais. Nem toda informação do objeto deve ser alterada livremente. Se existisse um `setLitros()` público no `Tanque`, qualquer pessoa poderia colocar 500 litros num tanque de 50, invalidando a lógica do sistema, mesmo com o atributo privado.
 
-Por isso, ao criar um atributo privado não devemos criar automaticamente um setter público. Quando for necessário alterar um atributo, criamos métodos com condições que representem ações reais do objeto e possam ser validadas. Por exemplo:
+Por isso, em vez de um setter, usamos métodos que representem ações reais do objeto e validem a regra, como o `abastecer()`:
 
 ```java
 public void abastecer(int quantidade) {
-    if (quantidade > 0 && combustivel + quantidade <= 50) {
-        combustivel = combustivel + quantidade;
+    if (quantidade > 0 && litros + quantidade <= 50) {
+        litros = litros + quantidade;
     }
 }
 ```
 
-O usuário não define qualquer valor para o tanque: ele informa quanto quer adicionar, e o sistema verifica se a quantidade é maior que zero e se o tanque não passará de 50 litros. O mesmo vale para a velocidade, que só muda por `acelerar()`.
+O usuário não define qualquer valor: ele informa quanto quer adicionar, e o sistema verifica se a quantidade é maior que zero e se o tanque não passará de 50 litros.
+
+## Projeto Carro - Pergunta de reflexão "Associação entre objetos" - Aula 17/09/26
+
+**Se o `Carro` só precisa mostrar dados do tanque, não seria mais simples e mais leve guardar apenas um `int` com os litros em vez do objeto `Tanque`?**
+
+Não. Um `int` guarda apenas o dado, e um objeto guarda o dado mais o comportamento e as regras. Se o `Carro` tivesse só um número, ele precisaria conhecer e repetir a regra do limite de 50 litros para poder abastecer. Com o objeto `Tanque`, o `Carro` apenas pede `tanque.abastecer(quantidade)` e cada classe mantém suas próprias responsabilidades, deixando o código mais organizado.
 
 ## Evolução do projeto
 
@@ -136,11 +161,19 @@ O usuário não define qualquer valor para o tanque: ele informa quanto quer adi
 
 ### 10/09/26
 * Aplicação do encapsulamento: atributos passaram a ser privados (`private`).
-* Criação dos métodos `getModelo()` e `setModelo()`.
-* Criação de `getVelocidade()` e `getCombustivel()`, sem setters para esses atributos.
+* Criação dos métodos `getModelo()`, `setModelo()`, `getVelocidade()` e `getCombustivel()`.
 * Alteração do `Main.java` para usar os métodos de acesso e testar valores inválidos.
-* Aplicação dos conceitos de encapsulamento e Clean Code.
 * Adição da reflexão sobre getters, setters e proteção contra falhas de lógica.
 * Criação do construtor da classe `Carro`, exigindo o modelo como parâmetro obrigatório.
 * Utilização do método `setModelo()` no construtor.
 * Alteração do `Main.java` para utilizar o novo construtor.
+
+### 17/09/26
+* Criação da nova classe `Tanque`.
+* Criação do atributo `litros`, do construtor, de `getLitros()` e de `abastecer()` na classe `Tanque`.
+* Associação entre as classes `Carro` e `Tanque`.
+* Substituição do atributo `combustivel` do `Carro` pelo objeto `Tanque`.
+* Atualização do construtor de `Carro` para receber um objeto `Tanque`.
+* Atualização do método `abastecer()` para utilizar o objeto `Tanque` associado.
+* Criação de `getTanque()` e remoção de `getCombustivel()`.
+* Adição da reflexão sobre associação entre objetos e responsabilidades das classes.
