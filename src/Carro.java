@@ -1,10 +1,19 @@
 public class Carro {
 
-    // Atributos (nesta aula ainda PUBLICOS: qualquer classe consegue alterar
-    // direto)
-    public String modelo; // modelo do carro (ex: Gol)
-    public int combustivel; // litros de combustivel no tanque
-    public int velocidade; // velocidade atual em km/h (comeca em 0)
+    // Atributos PRIVADOS: so a propria classe consegue mexer neles diretamente
+    private String modelo; // modelo do carro (ex: Gol)
+    private int combustivel; // litros de combustivel no tanque
+    private int velocidade; // velocidade atual em km/h (comeca em 0)
+
+    // Getter do modelo: permite apenas LER o valor
+    public String getModelo() {
+        return modelo;
+    }
+
+    // Setter do modelo: permite trocar o modelo do carro
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
 
     // Aumenta a velocidade do carro.
     // Regra de negocio: a quantidade deve ser maior que zero
@@ -22,5 +31,17 @@ public class Carro {
         if (quantidade > 0 && combustivel + quantidade <= 50) {
             combustivel = combustivel + quantidade;
         }
+    }
+
+    // Retorna a velocidade atual (so leitura: nao existe setVelocidade de
+    // proposito)
+    public int getVelocidade() {
+        return velocidade;
+    }
+
+    // Retorna os litros de combustivel (so leitura: nao existe setCombustivel de
+    // proposito)
+    public int getCombustivel() {
+        return combustivel;
     }
 }
