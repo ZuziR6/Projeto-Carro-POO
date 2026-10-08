@@ -4,8 +4,14 @@ Atividade realizada em classe no dia **20/08/26** na aula de Programação Orien
 ## Sobre o projeto
 Este projeto foi desenvolvido em Java utilizando conceitos de Programação Orientada a Objetos (POO), no qual o objeto escolhido foi um **carro**, representando o veículo utilizado no mundo real.
 
+Ao longo das aulas, o projeto evoluiu com a aplicação de encapsulamento, construtores, associação entre objetos e herança (generalização). Atualmente, a classe `Carro` é a superclasse do projeto, utilizada por diferentes tipos de carro, como `Fiat` e `Toyota`.
+
 ## Classes
-* `Carro`: classe principal, representa o carro.
+Atualmente, o projeto possui as seguintes classes:
+
+* `Carro`: superclasse que representa as características e comportamentos comuns aos carros.
+* `Fiat`: classe filha de `Carro`, representando um carro da Fiat.
+* `Toyota`: classe filha de `Carro`, representando um carro da Toyota.
 * `Tanque`: classe responsável por representar o tanque e controlar seus litros.
 * `Main`: classe responsável por criar os objetos e realizar os testes do projeto.
 
@@ -21,6 +27,18 @@ A classe `Carro` possui os seguintes atributos:
 A classe `Tanque` possui o seguinte atributo:
 
 * `litros`: representa os litros de combustível no tanque.
+
+A classe `Fiat` possui o seguinte atributo:
+
+* `arCondicionado`: representa se o ar-condicionado está disponível.
+
+  * Inicia como `true`.
+
+A classe `Toyota` possui o seguinte atributo:
+
+* `modoHibrido`: representa se o modo híbrido está disponível.
+
+  * Inicia como `true`.
 
 Os atributos são privados (`private`) para proteger o estado do objeto.
 
@@ -39,6 +57,24 @@ A classe `Tanque` também possui construtor, e o `Main.java` cria o carro assim:
 ```java
 Carro carro = new Carro("Gol", new Tanque(0));
 ```
+
+Na aula de **24/09/26**, foram criadas as classes `Fiat` e `Toyota`, que herdam de `Carro` e usam `super()` para chamar o construtor da classe mãe:
+
+```java
+public Fiat() {
+    super("Fiat Argo", new Tanque(0));
+    this.arCondicionado = true;
+}
+```
+
+```java
+public Toyota() {
+    super("Toyota Corolla", new Tanque(0));
+    this.modoHibrido = true;
+}
+```
+
+Dessa forma, as classes filhas aproveitam a estrutura já existente em `Carro`, enquanto adicionam suas próprias características.
 
 ## Métodos
 
@@ -104,6 +140,32 @@ public void abastecer(int quantidade) {
 }
 ```
 
+### isArCondicionado() e setArCondicionado()
+Pertencem à classe `Fiat`: retornam e alteram o valor de `arCondicionado`.
+
+```java
+public boolean isArCondicionado() {
+    return arCondicionado;
+}
+
+public void setArCondicionado(boolean arCondicionado) {
+    this.arCondicionado = arCondicionado;
+}
+```
+
+### isModoHibrido() e setModoHibrido()
+Pertencem à classe `Toyota`: retornam e alteram o valor de `modoHibrido`.
+
+```java
+public boolean isModoHibrido() {
+    return modoHibrido;
+}
+
+public void setModoHibrido(boolean modoHibrido) {
+    this.modoHibrido = modoHibrido;
+}
+```
+
 ## Associação entre objetos
 Na aula de **17/09/26**, foi criada a classe `Tanque` para realizar uma associação com a classe `Carro`. O atributo que antes era um simples número (`combustivel`) passou a ser um objeto da classe `Tanque`:
 
@@ -113,18 +175,82 @@ private Tanque tanque;
 
 Essa associação permite que o `Carro` utilize os comportamentos do `Tanque`, enquanto o `Tanque` fica responsável por controlar seus litros e suas regras de negócio. O atributo `combustivel` e o método `getCombustivel()` deixaram de existir em `Carro`, pois essa informação agora pertence ao `Tanque`.
 
-## Testes
-O `Main.java` foi atualizado para criar o `Carro` com um objeto `Tanque` associado e testar abastecimento válido e inválido.
+## Herança (Generalização)
+Na aula de **24/09/26**, foi aplicado o conceito de herança, também chamado de generalização. A classe `Carro` passou a atuar como superclasse, contendo características e comportamentos comuns aos diferentes tipos de carro.
 
-Saída obtida:
+A classe `Fiat` herda de `Carro`:
+
+```java
+public class Fiat extends Carro {
+```
+
+E a classe `Toyota` também herda de `Carro`:
+
+```java
+public class Toyota extends Carro {
+```
+
+Por meio da herança, `Fiat` e `Toyota` recebem os métodos acessíveis de `Carro`, podendo utilizar comportamentos como:
+
+* `getModelo()`
+* `setModelo()`
+* `acelerar()`
+* `getVelocidade()`
+* `abastecer()`
+* `getTanque()`
+
+Além disso, cada classe filha possui suas próprias características (`arCondicionado` na `Fiat` e `modoHibrido` na `Toyota`). Assim, a herança permite reutilizar o que é comum aos carros, enquanto cada filha tem o que é específico dela.
+
+## Uso do super()
+Nas classes `Fiat` e `Toyota`, o `super()` é utilizado para chamar o construtor da classe mãe (`Carro`):
+
+```java
+super("Fiat Argo", new Tanque(0));
+```
+
+O `super()` permite que a classe filha utilize o construtor da classe mãe para inicializar as características que pertencem à estrutura de `Carro`, evitando duplicar na filha a lógica de inicialização de `modelo` e `tanque`.
+
+## Encapsulamento e herança
+Os atributos das classes são privados (`private`) para proteger o estado dos objetos. Na herança, a classe filha possui acesso aos comportamentos disponibilizados pela classe mãe, mas não acessa diretamente os atributos privados dela.
+
+Por exemplo, `Fiat` e `Toyota` não alteram diretamente `modelo` ou `tanque`. Para trabalhar com essas informações, utilizam os métodos da classe mãe, como `getModelo()`, `setModelo()`, `acelerar()` e `abastecer()`. Assim, o encapsulamento continua sendo aplicado mesmo com a utilização da herança.
+
+## Testes
+Na aula de **24/09/26**, o `Main.java` foi atualizado para testar os objetos das classes filhas `Fiat` e `Toyota`.
+
+Primeiramente, foi criado um objeto `Fiat`:
+
+```java
+Fiat fiat = new Fiat();
+```
+
+Depois, foram testados seu modelo, o ar-condicionado, a velocidade e o tanque. Em seguida, foi criado um objeto `Toyota`:
+
+```java
+Toyota toyota = new Toyota();
+```
+
+Também foram testados seu modelo, o modo híbrido, a velocidade e o tanque. Por fim, foi testada a regra de negócio tentando abastecer a `Fiat` além do limite.
+
+A saída obtida foi:
 
 ```text
-Modelo: Gol
-Velocidade: 50 km/h
+FIAT
+Modelo: Fiat Argo
+Ar-condicionado: true
+Velocidade: 60 km/h
+Tanque: 40 L
+
+TOYOTA
+Modelo: Toyota Corolla
+Modo hibrido: true
+Velocidade: 80 km/h
 Tanque: 30 L
-Velocidade apos teste invalido: 50 km/h
-Tanque apos teste invalido: 30 L
+
+Tanque da Fiat apos tentar passar do limite: 40 L
 ```
+
+Os testes demonstram que `Fiat` e `Toyota` conseguem utilizar os comportamentos herdados de `Carro`, além de apresentarem suas próprias características.
 
 ## Projeto Carro - Pergunta de Reflexão "Clean Code" - Aula 10/09/26
 
@@ -149,6 +275,14 @@ O usuário não define qualquer valor: ele informa quanto quer adicionar, e o si
 **Se o `Carro` só precisa mostrar dados do tanque, não seria mais simples e mais leve guardar apenas um `int` com os litros em vez do objeto `Tanque`?**
 
 Não. Um `int` guarda apenas o dado, e um objeto guarda o dado mais o comportamento e as regras. Se o `Carro` tivesse só um número, ele precisaria conhecer e repetir a regra do limite de 50 litros para poder abastecer. Com o objeto `Tanque`, o `Carro` apenas pede `tanque.abastecer(quantidade)` e cada classe mantém suas próprias responsabilidades, deixando o código mais organizado.
+
+## Projeto Carro - Pergunta de reflexão "A Árvore Genealógica - Herança (Generalização)" - Aula 24/09/26
+
+**No nosso código, a mãe `Carro` possui o atributo `modelo` como `private`. Quando `Fiat` herda de `Carro`, ela recebe esse atributo, mas o código dentro de `Fiat` NÃO consegue fazer `this.modelo = "ABC"`. Ela é obrigada a usar o `super()` ou o `setModelo()`. Por que o Java não deixa a filha alterar as variáveis privadas da mãe diretamente? Qual o princípio das aulas passadas que isso está protegendo?**
+
+O Java não permite que a classe filha altere diretamente os atributos `private` da classe mãe porque esses atributos estão encapsulados e só podem ser acessados diretamente dentro da própria classe onde foram declarados. Isso protege os dados de alterações indevidas e permite que a classe mãe controle como seus atributos serão modificados. Por isso, a filha precisa utilizar o construtor com `super()` ou métodos como `setModelo()`, preservando o **encapsulamento** (princípio das aulas anteriores).
+
+Neste projeto, isso se aplica aos atributos `modelo` e `tanque` de `Carro`. As classes `Fiat` e `Toyota`, mesmo herdando de `Carro`, não os alteram diretamente: usam `super()` e métodos como `setModelo()`. Assim, os dados continuam protegidos e organizados dentro da estrutura de herança.
 
 ## Evolução do projeto
 
@@ -177,3 +311,16 @@ Não. Um `int` guarda apenas o dado, e um objeto guarda o dado mais o comportame
 * Atualização do método `abastecer()` para utilizar o objeto `Tanque` associado.
 * Criação de `getTanque()` e remoção de `getCombustivel()`.
 * Adição da reflexão sobre associação entre objetos e responsabilidades das classes.
+
+### 24/09/26
+* Aplicação do conceito de herança (generalização).
+* Utilização da classe `Carro` como superclasse.
+* Criação das classes `Fiat` e `Toyota` como classes filhas de `Carro`.
+* Utilização de `extends` para estabelecer a herança entre as classes.
+* Utilização de `super()` para chamar o construtor da classe `Carro`.
+* Definição dos modelos `Fiat Argo` e `Toyota Corolla`.
+* Criação do atributo `arCondicionado` na classe `Fiat` e `modoHibrido` na classe `Toyota`.
+* Criação dos métodos `isArCondicionado()`, `setArCondicionado()`, `isModoHibrido()` e `setModoHibrido()`.
+* Atualização do `Main.java` para testar objetos `Fiat` e `Toyota`.
+* Teste dos comportamentos herdados de `Carro` e das características específicas de cada classe filha.
+* Adição da reflexão sobre herança, generalização e proteção dos atributos privados por meio do encapsulamento.

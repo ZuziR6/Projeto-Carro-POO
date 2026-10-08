@@ -2,23 +2,34 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Cria o Carro informando o modelo e um objeto Tanque (comeca vazio)
-        Carro carro = new Carro("Gol", new Tanque(0));
-        System.out.println("Modelo: " + carro.getModelo());
+        // ---------- Teste da classe filha Fiat ----------
+        Fiat fiat = new Fiat();
 
-        // Testa a regra de velocidade (maximo 200)
-        carro.acelerar(50);
-        System.out.println("Velocidade: " + carro.getVelocidade() + " km/h");
+        System.out.println("FIAT");
+        System.out.println("Modelo: " + fiat.getModelo()); // herdado de Carro
+        System.out.println("Ar-condicionado: " + fiat.isArCondicionado()); // proprio da Fiat
 
-        // O Carro pede ao Tanque para abastecer (regra de 50 L fica no Tanque)
-        carro.abastecer(30);
-        System.out.println("Tanque: " + carro.getTanque() + " L");
+        fiat.acelerar(60); // herdado de Carro
+        System.out.println("Velocidade: " + fiat.getVelocidade() + " km/h");
 
-        // Testa valores invalidos: nada deve mudar
-        carro.acelerar(500); // passaria de 200
-        carro.abastecer(-10); // quantidade negativa
-        carro.abastecer(40); // 30 + 40 passaria de 50
-        System.out.println("Velocidade apos teste invalido: " + carro.getVelocidade() + " km/h");
-        System.out.println("Tanque apos teste invalido: " + carro.getTanque() + " L");
+        fiat.abastecer(40); // herdado de Carro
+        System.out.println("Tanque: " + fiat.getTanque() + " L");
+
+        // ---------- Teste da classe filha Toyota ----------
+        Toyota toyota = new Toyota();
+
+        System.out.println("\nTOYOTA");
+        System.out.println("Modelo: " + toyota.getModelo()); // herdado de Carro
+        System.out.println("Modo hibrido: " + toyota.isModoHibrido()); // proprio da Toyota
+
+        toyota.acelerar(80);
+        System.out.println("Velocidade: " + toyota.getVelocidade() + " km/h");
+
+        toyota.abastecer(30);
+        System.out.println("Tanque: " + toyota.getTanque() + " L");
+
+        // ---------- Teste de regra de negocio nas filhas ----------
+        fiat.abastecer(20); // 40 + 20 passaria de 50: deve ser ignorado
+        System.out.println("\nTanque da Fiat apos tentar passar do limite: " + fiat.getTanque() + " L");
     }
 }
