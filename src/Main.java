@@ -2,9 +2,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Cria o objeto Carro; agora o modelo so muda pelo setter
-        Carro carro = new Carro();
-        carro.setModelo("Gol");
+        // Cria o objeto Carro ja informando o modelo (obrigatorio) no construtor
+        Carro carro = new Carro("Gol");
         System.out.println("Modelo: " + carro.getModelo());
 
         // Testa a regra de velocidade (maximo 200)

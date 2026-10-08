@@ -19,6 +19,23 @@ A classe `Carro` possui os seguintes atributos:
 
 Os atributos agora são privados (`private`) para proteger o estado do objeto (encapsulamento).
 
+## Construtores
+Na aula de **10/09/26**, foi criado um construtor para a classe `Carro`, definindo o atributo essencial para o nascimento do objeto: o modelo. Agora não é possível criar um `Carro` sem informar o modelo (parâmetro obrigatório).
+
+```java
+public Carro(String modelo) {
+    setModelo(modelo);
+}
+```
+
+O construtor utiliza o método `setModelo()` para atribuir o valor, mantendo o acesso ao atributo em um único lugar.
+
+O `Main.java` passou a criar o objeto assim:
+
+```java
+Carro carro = new Carro("Gol");
+```
+
 ## Métodos
 
 ### getModelo()
@@ -78,7 +95,7 @@ public int getCombustivel() {
 Na aula de **10/09/26**, os atributos de `Carro` passaram de `public` para `private`. Agora o `Main` não consegue mais fazer `carro.velocidade = 500`, e o acesso é feito por métodos que protegem as regras de negócio.
 
 ## Testes
-O `Main.java` foi atualizado para usar os getters e setters e para testar valores inválidos, que são ignorados pelas regras dos métodos.
+O `Main.java` foi atualizado para criar o objeto com o novo construtor e continua testando valores inválidos, que são ignorados pelas regras dos métodos.
 
 Saída obtida:
 
@@ -124,3 +141,6 @@ O usuário não define qualquer valor para o tanque: ele informa quanto quer adi
 * Alteração do `Main.java` para usar os métodos de acesso e testar valores inválidos.
 * Aplicação dos conceitos de encapsulamento e Clean Code.
 * Adição da reflexão sobre getters, setters e proteção contra falhas de lógica.
+* Criação do construtor da classe `Carro`, exigindo o modelo como parâmetro obrigatório.
+* Utilização do método `setModelo()` no construtor.
+* Alteração do `Main.java` para utilizar o novo construtor.

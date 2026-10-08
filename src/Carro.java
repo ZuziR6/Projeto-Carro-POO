@@ -5,6 +5,13 @@ public class Carro {
     private int combustivel; // litros de combustivel no tanque
     private int velocidade; // velocidade atual em km/h (comeca em 0)
 
+    // Construtor: define o que o carro PRECISA ter para "nascer".
+    // Sem informar o modelo nao e possivel criar um Carro.
+    // Usa o setter para atribuir o modelo.
+    public Carro(String modelo) {
+        setModelo(modelo);
+    }
+
     // Getter do modelo: permite apenas LER o valor
     public String getModelo() {
         return modelo;
