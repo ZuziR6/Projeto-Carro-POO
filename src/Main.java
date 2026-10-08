@@ -31,5 +31,16 @@ public class Main {
         // ---------- Teste de regra de negocio nas filhas ----------
         fiat.abastecer(20); // 40 + 20 passaria de 50: deve ser ignorado
         System.out.println("\nTanque da Fiat apos tentar passar do limite: " + fiat.getTanque() + " L");
+
+        // ---------- Polimorfismo de sobrescrita ----------
+        // Um array de Carro pode guardar Carro, Fiat e Toyota (as filhas TAMBEM sao
+        // Carro)
+        Carro[] carros = { new Carro("Gol", new Tanque(0)), fiat, toyota };
+
+        System.out.println("\nPOLIMORFISMO");
+        for (Carro c : carros) {
+            // Mesma chamada (c.buzinar()), resultado diferente conforme o objeto real
+            System.out.println(c.getModelo() + " -> " + c.buzinar());
+        }
     }
 }

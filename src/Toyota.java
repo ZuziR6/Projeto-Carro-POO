@@ -19,4 +19,12 @@ public class Toyota extends Carro {
     public void setModoHibrido(boolean modoHibrido) {
         this.modoHibrido = modoHibrido;
     }
+
+    // @Override: indica que estamos SOBRESCREVENDO o metodo buzinar() herdado de
+    // Carro.
+    // Mesma assinatura, mas com o comportamento proprio da Toyota.
+    @Override
+    public String buzinar() {
+        return "Toyota: Pim-pim!";
+    }
 }

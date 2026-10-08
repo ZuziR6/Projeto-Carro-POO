@@ -36,6 +36,12 @@ public class Carro {
         tanque.abastecer(quantidade);
     }
 
+    // Faz o carro buzinar. Este e o comportamento PADRAO de qualquer carro.
+    // As classes filhas podem SOBRESCREVER (override) este metodo.
+    public String buzinar() {
+        return "Beep beep!";
+    }
+
     // Retorna a velocidade atual
     public int getVelocidade() {
         return velocidade;

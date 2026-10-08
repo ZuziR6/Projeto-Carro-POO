@@ -4,14 +4,14 @@ Atividade realizada em classe no dia **20/08/26** na aula de Programação Orien
 ## Sobre o projeto
 Este projeto foi desenvolvido em Java utilizando conceitos de Programação Orientada a Objetos (POO), no qual o objeto escolhido foi um **carro**, representando o veículo utilizado no mundo real.
 
-Ao longo das aulas, o projeto evoluiu com a aplicação de encapsulamento, construtores, associação entre objetos e herança (generalização). Atualmente, a classe `Carro` é a superclasse do projeto, utilizada por diferentes tipos de carro, como `Fiat` e `Toyota`.
+Ao longo das aulas, o projeto evoluiu com a aplicação de encapsulamento, construtores, associação entre objetos, herança (generalização) e polimorfismo de sobrescrita. Atualmente, a classe `Carro` é a superclasse do projeto, utilizada por diferentes tipos de carro, como `Fiat` e `Toyota`.
 
 ## Classes
 Atualmente, o projeto possui as seguintes classes:
 
 * `Carro`: superclasse que representa as características e comportamentos comuns aos carros.
-* `Fiat`: classe filha de `Carro`, representando um carro da Fiat.
-* `Toyota`: classe filha de `Carro`, representando um carro da Toyota.
+* `Fiat`: classe filha de `Carro`, representando um carro da Fiat. Sobrescreve o método `buzinar()`.
+* `Toyota`: classe filha de `Carro`, representando um carro da Toyota. Sobrescreve o método `buzinar()`.
 * `Tanque`: classe responsável por representar o tanque e controlar seus litros.
 * `Main`: classe responsável por criar os objetos e realizar os testes do projeto.
 
@@ -109,6 +109,15 @@ O método `getTanque()` retorna os litros do tanque por meio do objeto `Tanque` 
 ```java
 public int getTanque() {
     return tanque.getLitros();
+}
+```
+
+### buzinar()
+Pertence à classe `Carro` e retorna o som padrão da buzina de um carro. Esse método é sobrescrito pelas classes filhas (veja a seção Polimorfismo de sobrescrita).
+
+```java
+public String buzinar() {
+    return "Beep beep!";
 }
 ```
 
@@ -215,8 +224,46 @@ Os atributos das classes são privados (`private`) para proteger o estado dos ob
 
 Por exemplo, `Fiat` e `Toyota` não alteram diretamente `modelo` ou `tanque`. Para trabalhar com essas informações, utilizam os métodos da classe mãe, como `getModelo()`, `setModelo()`, `acelerar()` e `abastecer()`. Assim, o encapsulamento continua sendo aplicado mesmo com a utilização da herança.
 
+## Polimorfismo de sobrescrita
+Na aula de **01/10/26**, foi aplicado o polimorfismo de sobrescrita (override). A classe `Carro` possui o método `buzinar()` com um comportamento padrão, e as classes filhas `Fiat` e `Toyota` sobrescrevem esse método, mantendo a mesma assinatura, mas com um comportamento próprio. A anotação `@Override` indica que o método está sendo sobrescrito:
+
+```java
+// Na classe Carro
+public String buzinar() {
+    return "Beep beep!";
+}
+```
+
+```java
+// Na classe Fiat
+@Override
+public String buzinar() {
+    return "Fiat: Pi-pi!";
+}
+```
+
+```java
+// Na classe Toyota
+@Override
+public String buzinar() {
+    return "Toyota: Pim-pim!";
+}
+```
+
+O polimorfismo aparece quando uma variável do tipo `Carro` guarda objetos de classes diferentes (`Carro`, `Fiat` e `Toyota`, pois as filhas também são `Carro`). A chamada é sempre a mesma (`c.buzinar()`), mas o resultado muda conforme o objeto real:
+
+```java
+Carro[] carros = { new Carro("Gol", new Tanque(0)), fiat, toyota };
+
+for (Carro c : carros) {
+    System.out.println(c.getModelo() + " -> " + c.buzinar());
+}
+```
+
+Dessa forma, o código que usa `Carro` não precisa saber qual é o tipo exato de cada carro: o Java escolhe automaticamente a versão correta do método em tempo de execução.
+
 ## Testes
-Na aula de **24/09/26**, o `Main.java` foi atualizado para testar os objetos das classes filhas `Fiat` e `Toyota`.
+Na aula de **24/09/26**, o `Main.java` foi atualizado para testar os objetos das classes filhas `Fiat` e `Toyota`, e na aula de **01/10/26** foi acrescentado o teste do polimorfismo de sobrescrita.
 
 Primeiramente, foi criado um objeto `Fiat`:
 
@@ -230,7 +277,7 @@ Depois, foram testados seu modelo, o ar-condicionado, a velocidade e o tanque. E
 Toyota toyota = new Toyota();
 ```
 
-Também foram testados seu modelo, o modo híbrido, a velocidade e o tanque. Por fim, foi testada a regra de negócio tentando abastecer a `Fiat` além do limite.
+Também foram testados seu modelo, o modo híbrido, a velocidade e o tanque. Foi testada a regra de negócio tentando abastecer a `Fiat` além do limite. Por fim, foi criado um array de `Carro` com um `Carro`, a `Fiat` e a `Toyota` para chamar `buzinar()` em cada um.
 
 A saída obtida foi:
 
@@ -248,9 +295,14 @@ Velocidade: 80 km/h
 Tanque: 30 L
 
 Tanque da Fiat apos tentar passar do limite: 40 L
+
+POLIMORFISMO
+Gol -> Beep beep!
+Fiat Argo -> Fiat: Pi-pi!
+Toyota Corolla -> Toyota: Pim-pim!
 ```
 
-Os testes demonstram que `Fiat` e `Toyota` conseguem utilizar os comportamentos herdados de `Carro`, além de apresentarem suas próprias características.
+Os testes demonstram que `Fiat` e `Toyota` conseguem utilizar os comportamentos herdados de `Carro`, além de apresentarem suas próprias características e sobrescreverem o método `buzinar()`.
 
 ## Projeto Carro - Pergunta de Reflexão "Clean Code" - Aula 10/09/26
 
@@ -315,12 +367,4 @@ Neste projeto, isso se aplica aos atributos `modelo` e `tanque` de `Carro`. As c
 ### 24/09/26
 * Aplicação do conceito de herança (generalização).
 * Utilização da classe `Carro` como superclasse.
-* Criação das classes `Fiat` e `Toyota` como classes filhas de `Carro`.
-* Utilização de `extends` para estabelecer a herança entre as classes.
-* Utilização de `super()` para chamar o construtor da classe `Carro`.
-* Definição dos modelos `Fiat Argo` e `Toyota Corolla`.
-* Criação do atributo `arCondicionado` na classe `Fiat` e `modoHibrido` na classe `Toyota`.
-* Criação dos métodos `isArCondicionado()`, `setArCondicionado()`, `isModoHibrido()` e `setModoHibrido()`.
-* Atualização do `Main.java` para testar objetos `Fiat` e `Toyota`.
-* Teste dos comportamentos herdados de `Carro` e das características específicas de cada classe filha.
-* Adição da reflexão sobre herança, generalização e proteção dos atributos privados por meio do encapsulamento.
+*

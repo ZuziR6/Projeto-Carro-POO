@@ -19,4 +19,12 @@ public class Fiat extends Carro {
     public void setArCondicionado(boolean arCondicionado) {
         this.arCondicionado = arCondicionado;
     }
+
+    // @Override: indica que estamos SOBRESCREVENDO o metodo buzinar() herdado de
+    // Carro.
+    // Mesma assinatura, mas com o comportamento proprio da Fiat.
+    @Override
+    public String buzinar() {
+        return "Fiat: Pi-pi!";
+    }
 }
