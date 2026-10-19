@@ -32,15 +32,16 @@ public class Main {
         fiat.abastecer(20); // 40 + 20 passaria de 50: deve ser ignorado
         System.out.println("\nTanque da Fiat apos tentar passar do limite: " + fiat.getTanque() + " L");
 
-        // ---------- Polimorfismo de sobrescrita ----------
-        // Um array de Carro pode guardar Carro, Fiat e Toyota (as filhas TAMBEM sao
-        // Carro)
-        Carro[] carros = { new Carro("Gol", new Tanque(0)), fiat, toyota };
+        // ---------- Classe abstrata + polimorfismo ----------
+        // Carro e abstrata: "new Carro(...)" agora da ERRO de compilacao.
+        // Mas ainda podemos usar Carro como TIPO para guardar as filhas (Fiat e Toyota
+        // SAO Carro)
+        Carro[] carros = { fiat, toyota };
 
         System.out.println("\nPOLIMORFISMO");
         for (Carro c : carros) {
-            // Mesma chamada (c.buzinar()), resultado diferente conforme o objeto real
-            System.out.println(c.getModelo() + " -> " + c.buzinar());
+            // Mesmas chamadas, resultado diferente conforme o objeto real
+            System.out.println(c.getModelo() + " -> " + c.buzinar() + " | Tipo: " + c.exibirTipo());
         }
     }
 }

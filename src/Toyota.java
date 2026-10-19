@@ -20,6 +20,12 @@ public class Toyota extends Carro {
         this.modoHibrido = modoHibrido;
     }
 
+    // Implementacao OBRIGATORIA do metodo abstrato exibirTipo() declarado em Carro
+    @Override
+    public String exibirTipo() {
+        return "Sedan medio";
+    }
+
     // @Override: indica que estamos SOBRESCREVENDO o metodo buzinar() herdado de
     // Carro.
     // Mesma assinatura, mas com o comportamento proprio da Toyota.

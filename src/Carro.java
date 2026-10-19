@@ -3,9 +3,9 @@
 public abstract class Carro {
 
     // Atributos privados: so a propria classe consegue mexer neles diretamente
-    private String modelo;     // modelo do carro (ex: Gol)
-    private Tanque tanque;     // ASSOCIACAO: o carro possui um objeto Tanque
-    private int velocidade;    // velocidade atual em km/h (comeca em 0)
+    private String modelo; // modelo do carro (ex: Gol)
+    private Tanque tanque; // ASSOCIACAO: o carro possui um objeto Tanque
+    private int velocidade; // velocidade atual em km/h (comeca em 0)
 
     // Construtor: o carro so nasce se receber um modelo e um Tanque
     public Carro(String modelo, Tanque tanque) {

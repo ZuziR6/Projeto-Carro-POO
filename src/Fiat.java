@@ -20,6 +20,12 @@ public class Fiat extends Carro {
         this.arCondicionado = arCondicionado;
     }
 
+    // Implementacao OBRIGATORIA do metodo abstrato exibirTipo() declarado em Carro
+    @Override
+    public String exibirTipo() {
+        return "Hatch compacto";
+    }
+
     // @Override: indica que estamos SOBRESCREVENDO o metodo buzinar() herdado de
     // Carro.
     // Mesma assinatura, mas com o comportamento proprio da Fiat.

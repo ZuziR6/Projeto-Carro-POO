@@ -4,14 +4,14 @@ Atividade realizada em classe no dia **20/08/26** na aula de Programação Orien
 ## Sobre o projeto
 Este projeto foi desenvolvido em Java utilizando conceitos de Programação Orientada a Objetos (POO), no qual o objeto escolhido foi um **carro**, representando o veículo utilizado no mundo real.
 
-Ao longo das aulas, o projeto evoluiu com a aplicação de encapsulamento, construtores, associação entre objetos, herança (generalização) e polimorfismo de sobrescrita. Atualmente, a classe `Carro` é a superclasse do projeto, utilizada por diferentes tipos de carro, como `Fiat` e `Toyota`.
+Ao longo das aulas, o projeto evoluiu com a aplicação de encapsulamento, construtores, associação entre objetos, herança (generalização), polimorfismo de sobrescrita e classe abstrata. Atualmente, a classe `Carro` é a superclasse do projeto, utilizada por diferentes tipos de carro, como `Fiat` e `Toyota`.
 
 ## Classes
 Atualmente, o projeto possui as seguintes classes:
 
-* `Carro`: superclasse que representa as características e comportamentos comuns aos carros.
-* `Fiat`: classe filha de `Carro`, representando um carro da Fiat. Sobrescreve o método `buzinar()`.
-* `Toyota`: classe filha de `Carro`, representando um carro da Toyota. Sobrescreve o método `buzinar()`.
+* `Carro`: superclasse **abstrata** que representa as características e comportamentos comuns aos carros. Não pode ser instanciada diretamente.
+* `Fiat`: classe filha de `Carro`, representando um carro da Fiat. Sobrescreve `buzinar()` e implementa `exibirTipo()`.
+* `Toyota`: classe filha de `Carro`, representando um carro da Toyota. Sobrescreve `buzinar()` e implementa `exibirTipo()`.
 * `Tanque`: classe responsável por representar o tanque e controlar seus litros.
 * `Main`: classe responsável por criar os objetos e realizar os testes do projeto.
 
@@ -52,11 +52,7 @@ public Carro(String modelo, Tanque tanque) {
 }
 ```
 
-A classe `Tanque` também possui construtor, e o `Main.java` cria o carro assim:
-
-```java
-Carro carro = new Carro("Gol", new Tanque(0));
-```
+A classe `Tanque` também possui construtor. Até a aula de **01/10/26**, o `Main.java` criava o carro diretamente com `new Carro("Gol", new Tanque(0))`. Na aula de **08/10/26**, `Carro` se tornou abstrata e não pode mais ser instanciada diretamente: o construtor continua existindo, mas só é chamado pelas classes filhas por meio do `super()`.
 
 Na aula de **24/09/26**, foram criadas as classes `Fiat` e `Toyota`, que herdam de `Carro` e usam `super()` para chamar o construtor da classe mãe:
 
@@ -119,6 +115,13 @@ Pertence à classe `Carro` e retorna o som padrão da buzina de um carro. Esse m
 public String buzinar() {
     return "Beep beep!";
 }
+```
+
+### exibirTipo()
+Declarado como **método abstrato** na classe `Carro` (sem corpo) e implementado por `Fiat` e `Toyota`. Retorna o tipo do carro (veja a seção Classe abstrata).
+
+```java
+public abstract String exibirTipo();
 ```
 
 ### getVelocidade()
@@ -250,10 +253,10 @@ public String buzinar() {
 }
 ```
 
-O polimorfismo aparece quando uma variável do tipo `Carro` guarda objetos de classes diferentes (`Carro`, `Fiat` e `Toyota`, pois as filhas também são `Carro`). A chamada é sempre a mesma (`c.buzinar()`), mas o resultado muda conforme o objeto real:
+O polimorfismo aparece quando uma variável do tipo `Carro` guarda objetos de classes diferentes (`Fiat` e `Toyota`, pois as filhas também são `Carro`). A chamada é sempre a mesma (`c.buzinar()`), mas o resultado muda conforme o objeto real:
 
 ```java
-Carro[] carros = { new Carro("Gol", new Tanque(0)), fiat, toyota };
+Carro[] carros = { fiat, toyota };
 
 for (Carro c : carros) {
     System.out.println(c.getModelo() + " -> " + c.buzinar());
@@ -262,8 +265,40 @@ for (Carro c : carros) {
 
 Dessa forma, o código que usa `Carro` não precisa saber qual é o tipo exato de cada carro: o Java escolhe automaticamente a versão correta do método em tempo de execução.
 
+## Classe abstrata
+Na aula de **08/10/26**, a classe `Carro` foi transformada em uma **classe abstrata** com a palavra-chave `abstract`. Uma classe abstrata serve de modelo para as classes filhas e **não pode ser instanciada**: `new Carro(...)` passou a gerar erro de compilação. Na prática isso faz sentido, pois no mundo real não existe "um carro genérico", e sim um Fiat, um Toyota e assim por diante.
+
+```java
+public abstract class Carro {
+```
+
+Também foi criado o método abstrato `exibirTipo()`, que só tem a assinatura e **não tem corpo**. Assim, cada classe filha é **obrigada** a implementar o seu próprio `exibirTipo()`; se esquecer, o código não compila:
+
+```java
+// Na classe Carro
+public abstract String exibirTipo();
+```
+
+```java
+// Na classe Fiat
+@Override
+public String exibirTipo() {
+    return "Hatch compacto";
+}
+```
+
+```java
+// Na classe Toyota
+@Override
+public String exibirTipo() {
+    return "Sedan medio";
+}
+```
+
+Com isso, `Carro` define **o que** todo carro deve ter (um tipo), e cada filha define **como** isso é feito. A classe abstrata continua podendo ser usada como tipo, então o polimorfismo segue funcionando: um array de `Carro` guarda `Fiat` e `Toyota`, e cada chamada de `exibirTipo()` executa a versão da classe real do objeto. O `Main.java` precisou ser alterado para não criar mais um `Carro` diretamente.
+
 ## Testes
-Na aula de **24/09/26**, o `Main.java` foi atualizado para testar os objetos das classes filhas `Fiat` e `Toyota`, e na aula de **01/10/26** foi acrescentado o teste do polimorfismo de sobrescrita.
+Na aula de **24/09/26**, o `Main.java` foi atualizado para testar os objetos das classes filhas `Fiat` e `Toyota`. Na aula de **01/10/26** foi acrescentado o teste do polimorfismo de sobrescrita e, na aula de **08/10/26**, o teste da classe abstrata.
 
 Primeiramente, foi criado um objeto `Fiat`:
 
@@ -277,7 +312,7 @@ Depois, foram testados seu modelo, o ar-condicionado, a velocidade e o tanque. E
 Toyota toyota = new Toyota();
 ```
 
-Também foram testados seu modelo, o modo híbrido, a velocidade e o tanque. Foi testada a regra de negócio tentando abastecer a `Fiat` além do limite. Por fim, foi criado um array de `Carro` com um `Carro`, a `Fiat` e a `Toyota` para chamar `buzinar()` em cada um.
+Também foram testados seu modelo, o modo híbrido, a velocidade e o tanque. Foi testada a regra de negócio tentando abastecer a `Fiat` além do limite. Por fim, foi criado um array de `Carro` com a `Fiat` e a `Toyota` para chamar `buzinar()` e `exibirTipo()` em cada um.
 
 A saída obtida foi:
 
@@ -297,12 +332,11 @@ Tanque: 30 L
 Tanque da Fiat apos tentar passar do limite: 40 L
 
 POLIMORFISMO
-Gol -> Beep beep!
-Fiat Argo -> Fiat: Pi-pi!
-Toyota Corolla -> Toyota: Pim-pim!
+Fiat Argo -> Fiat: Pi-pi! | Tipo: Hatch compacto
+Toyota Corolla -> Toyota: Pim-pim! | Tipo: Sedan medio
 ```
 
-Os testes demonstram que `Fiat` e `Toyota` conseguem utilizar os comportamentos herdados de `Carro`, além de apresentarem suas próprias características e sobrescreverem o método `buzinar()`.
+Os testes demonstram que `Fiat` e `Toyota` conseguem utilizar os comportamentos herdados de `Carro`, além de apresentarem suas próprias características, sobrescreverem `buzinar()` e implementarem o método abstrato `exibirTipo()`.
 
 ## Projeto Carro - Pergunta de Reflexão "Clean Code" - Aula 10/09/26
 
@@ -367,4 +401,24 @@ Neste projeto, isso se aplica aos atributos `modelo` e `tanque` de `Carro`. As c
 ### 24/09/26
 * Aplicação do conceito de herança (generalização).
 * Utilização da classe `Carro` como superclasse.
-*
+* Criação das classes `Fiat` e `Toyota` como classes filhas de `Carro`.
+* Utilização de `extends` para estabelecer a herança entre as classes.
+* Utilização de `super()` para chamar o construtor da classe `Carro`.
+* Definição dos modelos `Fiat Argo` e `Toyota Corolla`.
+* Criação do atributo `arCondicionado` na classe `Fiat` e `modoHibrido` na classe `Toyota`.
+* Criação dos métodos `isArCondicionado()`, `setArCondicionado()`, `isModoHibrido()` e `setModoHibrido()`.
+* Atualização do `Main.java` para testar objetos `Fiat` e `Toyota`.
+* Teste dos comportamentos herdados de `Carro` e das características específicas de cada classe filha.
+* Adição da reflexão sobre herança, generalização e proteção dos atributos privados por meio do encapsulamento.
+
+### 01/10/26
+* Aplicação do polimorfismo de sobrescrita.
+* Criação do método `buzinar()` na classe `Carro`.
+* Sobrescrita do método `buzinar()` nas classes `Fiat` e `Toyota` com `@Override`.
+* Atualização do `Main.java` com um array de `Carro` para demonstrar o polimorfismo.
+
+### 08/10/26
+* Transformação da classe `Carro` em classe abstrata (`abstract`).
+* Criação do método abstrato `exibirTipo()` na classe `Carro`.
+* Implementação de `exibirTipo()` nas classes `Fiat` e `Toyota` com `@Override`.
+* Atualização do `Main.java`, que deixou de instanciar `Carro` diretamente e passou a testar `exibirTipo()`.
