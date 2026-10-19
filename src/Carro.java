@@ -1,9 +1,11 @@
-public class Carro {
+// abstract: Carro agora e uma classe ABSTRATA.
+// Ela serve de modelo para as filhas e NAO pode mais ser instanciada (new Carro(...) da erro).
+public abstract class Carro {
 
     // Atributos privados: so a propria classe consegue mexer neles diretamente
-    private String modelo; // modelo do carro (ex: Gol)
-    private Tanque tanque; // ASSOCIACAO: o carro possui um objeto Tanque
-    private int velocidade; // velocidade atual em km/h (comeca em 0)
+    private String modelo;     // modelo do carro (ex: Gol)
+    private Tanque tanque;     // ASSOCIACAO: o carro possui um objeto Tanque
+    private int velocidade;    // velocidade atual em km/h (comeca em 0)
 
     // Construtor: o carro so nasce se receber um modelo e um Tanque
     public Carro(String modelo, Tanque tanque) {
@@ -41,6 +43,10 @@ public class Carro {
     public String buzinar() {
         return "Beep beep!";
     }
+
+    // Metodo ABSTRATO: so tem a assinatura, SEM corpo.
+    // Cada classe filha e OBRIGADA a implementar o seu proprio exibirTipo().
+    public abstract String exibirTipo();
 
     // Retorna a velocidade atual
     public int getVelocidade() {
