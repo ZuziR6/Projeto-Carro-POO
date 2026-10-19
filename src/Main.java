@@ -36,6 +36,15 @@ public class Main {
         // Carro e abstrata: "new Carro(...)" agora da ERRO de compilacao.
         // Mas ainda podemos usar Carro como TIPO para guardar as filhas (Fiat e Toyota
         // SAO Carro)
+        
+        // ---------- Microdesafio: tentar criar um objeto da classe abstrata ----------
+        // Descomentando a linha abaixo, o compilador mostra o ERRO e o projeto nao
+        // roda:
+        // Carro carro = new Carro("Gol", new Tanque(0));
+        // Erro no javac: "Carro is abstract; cannot be instantiated"
+        // Erro no VS Code: "Cannot instantiate the type Carro"
+        // Por isso criamos os objetos pelas subclasses (Fiat e Toyota), que funcionam
+        // normalmente.
         Carro[] carros = { fiat, toyota };
 
         System.out.println("\nPOLIMORFISMO");

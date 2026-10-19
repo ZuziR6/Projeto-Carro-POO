@@ -52,7 +52,7 @@ public Carro(String modelo, Tanque tanque) {
 }
 ```
 
-A classe `Tanque` também possui construtor. Até a aula de **01/10/26**, o `Main.java` criava o carro diretamente com `new Carro("Gol", new Tanque(0))`. Na aula de **08/10/26**, `Carro` se tornou abstrata e não pode mais ser instanciada diretamente: o construtor continua existindo, mas só é chamado pelas classes filhas por meio do `super()`.
+A classe `Tanque` também possui construtor. Até a aula de **01/10/26**, o `Main.java` criava o carro diretamente com `new Carro("Gol", new Tanque(0))`. Na aula de **15/10/26**, `Carro` se tornou abstrata e não pode mais ser instanciada diretamente: o construtor continua existindo, mas só é chamado pelas classes filhas por meio do `super()`.
 
 Na aula de **24/09/26**, foram criadas as classes `Fiat` e `Toyota`, que herdam de `Carro` e usam `super()` para chamar o construtor da classe mãe:
 
@@ -266,7 +266,7 @@ for (Carro c : carros) {
 Dessa forma, o código que usa `Carro` não precisa saber qual é o tipo exato de cada carro: o Java escolhe automaticamente a versão correta do método em tempo de execução.
 
 ## Classe abstrata
-Na aula de **08/10/26**, a classe `Carro` foi transformada em uma **classe abstrata** com a palavra-chave `abstract`. Uma classe abstrata serve de modelo para as classes filhas e **não pode ser instanciada**: `new Carro(...)` passou a gerar erro de compilação. Na prática isso faz sentido, pois no mundo real não existe "um carro genérico", e sim um Fiat, um Toyota e assim por diante.
+Na aula de **15/10/26**, a classe `Carro` foi transformada em uma **classe abstrata** com a palavra-chave `abstract`. Uma classe abstrata serve de modelo para as classes filhas e **não pode ser instanciada**: `new Carro(...)` passou a gerar erro de compilação. Na prática isso faz sentido, pois no mundo real não existe "um carro genérico", e sim um Fiat, um Toyota e assim por diante.
 
 ```java
 public abstract class Carro {
@@ -298,7 +298,7 @@ public String exibirTipo() {
 Com isso, `Carro` define **o que** todo carro deve ter (um tipo), e cada filha define **como** isso é feito. A classe abstrata continua podendo ser usada como tipo, então o polimorfismo segue funcionando: um array de `Carro` guarda `Fiat` e `Toyota`, e cada chamada de `exibirTipo()` executa a versão da classe real do objeto. O `Main.java` precisou ser alterado para não criar mais um `Carro` diretamente.
 
 ## Testes
-Na aula de **24/09/26**, o `Main.java` foi atualizado para testar os objetos das classes filhas `Fiat` e `Toyota`. Na aula de **01/10/26** foi acrescentado o teste do polimorfismo de sobrescrita e, na aula de **08/10/26**, o teste da classe abstrata.
+Na aula de **24/09/26**, o `Main.java` foi atualizado para testar os objetos das classes filhas `Fiat` e `Toyota`. Na aula de **01/10/26** foi acrescentado o teste do polimorfismo de sobrescrita e, na aula de **15/10/26**, o teste da classe abstrata.
 
 Primeiramente, foi criado um objeto `Fiat`:
 
@@ -337,6 +337,41 @@ Toyota Corolla -> Toyota: Pim-pim! | Tipo: Sedan medio
 ```
 
 Os testes demonstram que `Fiat` e `Toyota` conseguem utilizar os comportamentos herdados de `Carro`, além de apresentarem suas próprias características, sobrescreverem `buzinar()` e implementarem o método abstrato `exibirTipo()`.
+
+## Projeto Carro - Microdesafio Pessoal "Transforme em Abstrata" - Aula 15/10/26
+
+**Analise sua classe principal. Faz sentido existir um objeto APENAS `Carro`, sem ser uma Fiat, uma Toyota ou outro modelo específico?**
+
+Não. No mundo real não existe um "carro genérico": todo carro que existe é de uma marca e de um modelo, como uma Fiat ou uma Toyota. `Carro` é apenas o conceito geral que reúne o que todos têm em comum (modelo, tanque, velocidade, acelerar, abastecer). Por isso a classe foi transformada em `abstract`:
+
+```java
+public abstract class Carro {
+```
+
+**Método abstrato que todas as subclasses devem implementar:** foi criado o `exibirTipo()`, que só tem a assinatura em `Carro` e é implementado de forma diferente em cada filha: `"Hatch compacto"` na `Fiat` e `"Sedan medio"` na `Toyota`.
+
+```java
+public abstract String exibirTipo();
+```
+
+**Teste: tentar criar um objeto da classe abstrata.** No `Main.java`, a linha abaixo foi testada e gerou erro de compilação:
+
+```java
+Carro carro = new Carro("Gol", new Tanque(0));
+```
+
+```text
+Carro is abstract; cannot be instantiated
+```
+
+Como a classe abstrata é só um modelo, o Java não permite criar objetos dela. Depois do teste, a linha foi deixada comentada para o projeto continuar compilando.
+
+**Prova de que as subclasses funcionam:** os objetos foram criados normalmente pelas classes filhas (`new Fiat()` e `new Toyota()`) e cada um respondeu com a sua própria implementação de `exibirTipo()`:
+
+```text
+Fiat Argo -> Fiat: Pi-pi! | Tipo: Hatch compacto
+Toyota Corolla -> Toyota: Pim-pim! | Tipo: Sedan medio
+```
 
 ## Projeto Carro - Pergunta de Reflexão "Clean Code" - Aula 10/09/26
 
@@ -417,8 +452,11 @@ Neste projeto, isso se aplica aos atributos `modelo` e `tanque` de `Carro`. As c
 * Sobrescrita do método `buzinar()` nas classes `Fiat` e `Toyota` com `@Override`.
 * Atualização do `Main.java` com um array de `Carro` para demonstrar o polimorfismo.
 
-### 08/10/26
+### 15/10/26
 * Transformação da classe `Carro` em classe abstrata (`abstract`).
 * Criação do método abstrato `exibirTipo()` na classe `Carro`.
 * Implementação de `exibirTipo()` nas classes `Fiat` e `Toyota` com `@Override`.
 * Atualização do `Main.java`, que deixou de instanciar `Carro` diretamente e passou a testar `exibirTipo()`.
+* Resolução do microdesafio "Transforme em Abstrata" com a análise da classe `Carro`.
+* Teste de criação de objeto da classe abstrata, que gerou erro de compilação.
+* Adição da resposta do microdesafio ao README.
