@@ -1,68 +1,54 @@
+
 public class Main {
 
     public static void main(String[] args) {
 
-        // ---------- Teste da classe filha Fiat ----------
-        Fiat fiat = new Fiat();
+        // 1. Lista polimórfica de carros
+        Carro[] carros = {
+                new Tesla(),
+                new Toyota()
+        };
 
-        System.out.println("FIAT");
-        System.out.println("Modelo: " + fiat.getModelo()); // herdado de Carro
-        System.out.println("Ar-condicionado: " + fiat.isArCondicionado()); // proprio da Fiat
+        System.out.println("=== LISTA POLIMORFICA DE CARROS ===");
 
-        fiat.acelerar(60); // herdado de Carro
-        System.out.println("Velocidade: " + fiat.getVelocidade() + " km/h");
-
-        fiat.abastecer(40); // herdado de Carro
-        System.out.println("Tanque: " + fiat.getTanque() + " L");
-
-        // ---------- Teste da classe filha Toyota ----------
-        Toyota toyota = new Toyota();
-
-        System.out.println("\nTOYOTA");
-        System.out.println("Modelo: " + toyota.getModelo()); // herdado de Carro
-        System.out.println("Modo hibrido: " + toyota.isModoHibrido()); // proprio da Toyota
-
-        toyota.acelerar(80);
-        System.out.println("Velocidade: " + toyota.getVelocidade() + " km/h");
-
-        toyota.abastecer(30);
-        System.out.println("Tanque: " + toyota.getTanque() + " L");
-
-        // ---------- Teste de regra de negocio nas filhas ----------
-        fiat.abastecer(20); // 40 + 20 passaria de 50: deve ser ignorado
-        System.out.println("\nTanque da Fiat apos tentar passar do limite: " + fiat.getTanque() + " L");
-
-        // ---------- Microdesafio: tentar criar um objeto da classe abstrata ----------
-        // Descomentando a linha abaixo, o compilador mostra o ERRO e o projeto nao
-        // roda:
-        // Carro carro = new Carro("Gol", new Tanque(0));
-        // Erro no javac: "Carro is abstract; cannot be instantiated"
-        // Erro no VS Code: "Cannot instantiate the type Carro"
-        // Por isso criamos os objetos pelas subclasses (Fiat e Toyota), que funcionam
-        // normalmente.
-
-        // ---------- Classe abstrata + polimorfismo ----------
-        // Carro e abstrata: "new Carro(...)" agora da ERRO de compilacao.
-        // Mas ainda podemos usar Carro como TIPO para guardar as filhas (Fiat e Toyota
-        // SAO Carro)
-        Carro[] carros = { fiat, toyota };
-
-        System.out.println("\nPOLIMORFISMO");
-        for (Carro c : carros) {
-            // Mesmas chamadas, resultado diferente conforme o objeto real
-            System.out.println(c.getModelo() + " -> " + c.buzinar() + " | Tipo: " + c.exibirTipo());
+        for (Carro carro : carros) {
+            System.out.println(
+                    carro.getModelo()
+                            + " | "
+                            + carro.exibirTipo()
+                            + " | "
+                            + carro.buzinar());
         }
 
-        // ---------- Interface + polimorfismo (microdesafio) ----------
-        // Array do tipo da INTERFACE: guarda objetos de hierarquias DIFERENTES
-        // (Fiat e Toyota vem de Carro; Farol e Radio nao tem relacao nenhuma com Carro)
-        Ligavel[] ligaveis = { fiat, toyota, new Farol(), new Radio() };
+        // 2. Lista polimórfica da interface Ligavel
+        Ligavel[] ligaveis = {
+                new Tesla(),
+                new Toyota(),
+                new Farol(),
+                new Radio()
+        };
 
-        System.out.println("\nINTERFACE LIGAVEL");
+        System.out.println("\n=== INTERFACE LIGAVEL ===");
+
         for (Ligavel item : ligaveis) {
-            // Mesma chamada (ligar/desligar), resultado diferente conforme o objeto real
             System.out.println(item.ligar());
             System.out.println(item.desligar());
+        }
+
+        // 3. Lista polimórfica da interface Recarregavel
+        Recarregavel[] recarregaveis = {
+                new Tesla(),
+                new Apple("iPhone 17 Pro Max", new Bateria(0), true),
+                new Motorola("Moto G", new Bateria(0), true)
+        };
+
+        System.out.println("\n=== INTERFACE RECARREGAVEL ===");
+
+        for (Recarregavel item : recarregaveis) {
+            item.recarregar(85);
+            System.out.println(
+                    "Objeto recarregavel: "
+                            + item.getClass().getSimpleName());
         }
     }
 }

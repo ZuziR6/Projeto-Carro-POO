@@ -1,74 +1,41 @@
-// abstract: Carro agora e uma classe ABSTRATA.
-// Ela serve de modelo para as filhas e NAO pode mais ser instanciada (new Carro(...) da erro).
-// implements Ligavel: o Carro tambem cumpre o contrato da interface Ligavel.
-// Como Carro e abstrata, Fiat e Toyota HERDAM ligar() e desligar() prontos.
+
 public abstract class Carro implements Ligavel {
 
-    // Atributos privados: so a propria classe consegue mexer neles diretamente
-    private String modelo; // modelo do carro (ex: Gol)
-    private Tanque tanque; // ASSOCIACAO: o carro possui um objeto Tanque
-    private int velocidade; // velocidade atual em km/h (comeca em 0)
+    private String modelo;
+    private int velocidade;
 
-    // Construtor: o carro so nasce se receber um modelo e um Tanque
-    public Carro(String modelo, Tanque tanque) {
+    public Carro(String modelo) {
         this.modelo = modelo;
-        this.tanque = tanque;
+        this.velocidade = 0;
     }
 
-    // Getter do modelo: permite apenas LER o valor
     public String getModelo() {
         return modelo;
     }
 
-    // Setter do modelo: permite trocar o modelo do carro
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    // Aumenta a velocidade do carro.
-    // Regra de negocio: a quantidade deve ser maior que zero
-    // e a velocidade nao pode ultrapassar 200 km/h.
-    public void acelerar(int quantidade) {
-        if (quantidade > 0 && velocidade + quantidade <= 200) {
-            velocidade = velocidade + quantidade;
-        }
-    }
-
-    // O carro apenas PEDE para o Tanque abastecer.
-    // A regra de negocio (limite de 50 L) continua sendo do Tanque.
-    public void abastecer(int quantidade) {
-        tanque.abastecer(quantidade);
-    }
-
-    // Implementacao do metodo da interface Ligavel: liga o motor do carro
-    @Override
-    public String ligar() {
-        return modelo + ": motor ligado";
-    }
-
-    // Implementacao do metodo da interface Ligavel: desliga o motor do carro
-    @Override
-    public String desligar() {
-        return modelo + ": motor desligado";
-    }
-
-    // Faz o carro buzinar. Este e o comportamento PADRAO de qualquer carro.
-    // As classes filhas podem SOBRESCREVER (override) este metodo.
-    public String buzinar() {
-        return "Beep beep!";
-    }
-
-    // Metodo ABSTRATO: so tem a assinatura, SEM corpo.
-    // Cada classe filha e OBRIGADA a implementar o seu proprio exibirTipo().
-    public abstract String exibirTipo();
-
-    // Retorna a velocidade atual
     public int getVelocidade() {
         return velocidade;
     }
 
-    // Retorna os litros do tanque, perguntando ao objeto Tanque associado
-    public int getTanque() {
-        return tanque.getLitros();
+    public void acelerar(int quantidade) {
+        if (quantidade > 0 && velocidade + quantidade <= 200) {
+            velocidade += quantidade;
+        }
+    }
+
+    public String buzinar() {
+        return "Beep beep!";
+    }
+
+    public abstract String exibirTipo();
+
+    @Override
+    public String ligar() {
+        return modelo + ": veículo ligado";
+    }
+
+    @Override
+    public String desligar() {
+        return modelo + ": veículo desligado";
     }
 }

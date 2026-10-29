@@ -1,628 +1,169 @@
-# Projeto Carro - POO
-Atividade realizada em classe no dia **20/08/26** na aula de Programação Orientada a Objetos, a qual será dada continuidade a cada aula até o fim do semestre. Portanto, esse Readme.md irá ser atualizado conforme a evolução do projeto, podendo haver alterações no seu conteúdo, bem como remoção de antigas informações que não fazem mais sentido e adição de novas.
 
-## Sobre o projeto
-Este projeto foi desenvolvido em Java utilizando conceitos de Programação Orientada a Objetos (POO), no qual o objeto escolhido foi um **carro**, representando o veículo utilizado no mundo real.
+# Projeto FiapRide - [Seu Nome Completo]
 
-Ao longo das aulas, o projeto evoluiu com a aplicação de encapsulamento, construtores, associação entre objetos, herança (generalização), polimorfismo de sobrescrita, classe abstrata e interface. Atualmente, a classe `Carro` é a superclasse do projeto, utilizada por diferentes tipos de carro, como `Fiat` e `Toyota`.
+## Informações do Aluno
 
-## Classes
-Atualmente, o projeto possui as seguintes classes:
+- **Nome:** Gabriel Guimarães de Oliveira
+- **RM:** 567835
+- **Turma:** 2ccpb
+- **Curso:** Ciência da Computação
+- **GitHub:** @ZuziR6
 
-* `Ligavel`: interface que define o comportamento de poder ser ligado e desligado (`ligar()` e `desligar()`).
-* `Carro`: superclasse **abstrata** que representa as características e comportamentos comuns aos carros. Não pode ser instanciada diretamente. Implementa `Ligavel`.
-* `Fiat`: classe filha de `Carro`, representando um carro da Fiat. Sobrescreve `buzinar()` e implementa `exibirTipo()`.
-* `Toyota`: classe filha de `Carro`, representando um carro da Toyota. Sobrescreve `buzinar()` e implementa `exibirTipo()`.
-* `Tanque`: classe responsável por representar o tanque e controlar seus litros.
-* `Farol`: classe que representa o farol do carro. Implementa `Ligavel` e não tem relação de herança com `Carro`.
-* `Radio`: classe que representa o rádio do carro. Implementa `Ligavel` e não tem relação de herança com `Carro`.
-* `Main`: classe responsável por criar os objetos e realizar os testes do projeto.
+---
 
-## Atributos
-A classe `Carro` possui os seguintes atributos:
+## Descrição do Projeto
 
-* `modelo`: representa o modelo do carro.
-* `tanque`: representa o objeto `Tanque` associado ao carro.
-* `velocidade`: representa a velocidade atual em km/h.
+Este projeto é o resultado do aprendizado nas aulas 1-9 de Programação Orientada a Objetos, onde desenvolvemos um sistema de veículos com foco em encapsulamento, construtores, associação, herança, polimorfismo, classes abstratas e interfaces.
 
-  * Inicia em 0.
+O sistema possui uma classe abstrata Carro, implementada por Tesla e Toyota. O Tesla representa um veículo elétrico e possui uma bateria recarregável associada, enquanto o Toyota representa um veículo híbrido e possui um tanque de combustível. As classes Tanque e Bateria controlam seus próprios estados e validam as operações realizadas.
 
-A classe `Tanque` possui o seguinte atributo:
+O projeto também utiliza as interfaces Ligavel e Recarregavel. A primeira define comportamentos de ligar e desligar, implementados por veículos, faróis e rádios. A segunda estabelece o contrato de recarga, implementado pelo Tesla e pela Bateria. No Main, os conceitos são demonstrados por meio de arrays polimórficos e chamadas realizadas através das interfaces.
 
-* `litros`: representa os litros de combustível no tanque.
+---
 
-A classe `Fiat` possui o seguinte atributo:
+## Checklist de Implementação
 
-* `arCondicionado`: representa se o ar-condicionado está disponível.
+- [x] Aula 1 - Classes e Objetos
+- [x] Aula 2 - Métodos
+- [x] Aula 3 - Encapsulamento
+- [x] Aula 4 - Construtores
+- [x] Aula 5 - Associação
+- [x] Aula 6 - Herança
+- [x] Aula 7 - Polimorfismo
+- [x] Aula 8 - Classes Abstratas
+- [x] Aula 9 - Interfaces
 
-  * Inicia como `true`.
+---
 
-A classe `Toyota` possui o seguinte atributo:
+## Perguntas de Reflexão
 
-* `modoHibrido`: representa se o modo híbrido está disponível.
+### Aula 1 - Classes e Objetos
 
-  * Inicia como `true`.
+**Pergunta:** Por que precisamos criar uma classe `Passageiro`? Não seria mais fácil criar variáveis soltas no `main`? E se o sistema tiver um milhão de usuários?
 
-Os atributos são privados (`private`) para proteger o estado do objeto.
+**Sua Resposta:**
 
-## Construtores
-Na aula de **10/09/26**, foi criado um construtor para `Carro`, definindo o atributo essencial para o nascimento do objeto. Posteriormente, na aula de **17/09/26**, com a associação entre `Carro` e `Tanque`, o construtor passou a receber também um objeto `Tanque`:
+Criar uma classe permite reunir em uma única estrutura os atributos e comportamentos relacionados a um objeto. Se utilizássemos variáveis soltas para representar cada passageiro, teríamos que criar e controlar diversas variáveis individualmente, tornando o código difícil de manter. Com uma classe, podemos criar quantos objetos forem necessários a partir de um mesmo modelo. No nosso projeto, a classe `Carro` reúne características e comportamentos comuns aos veículos. Assim, `Tesla` e `Toyota` podem reutilizar essa estrutura sem duplicar todo o código. Essa organização facilita a manutenção e a evolução do sistema. Mesmo que a quantidade de objetos aumente, podemos trabalhar com coleções e estruturas polimórficas.
 
-```java
-public Carro(String modelo, Tanque tanque) {
-    this.modelo = modelo;
-    this.tanque = tanque;
-}
-```
+---
 
-A classe `Tanque` também possui construtor. Até a aula de **01/10/26**, o `Main.java` criava o carro diretamente com `new Carro("Gol", new Tanque(0))`. Na aula de **15/10/26**, `Carro` se tornou abstrata e não pode mais ser instanciada diretamente: o construtor continua existindo, mas só é chamado pelas classes filhas por meio do `super()`.
+### Aula 2 - Métodos
 
-Na aula de **24/09/26**, foram criadas as classes `Fiat` e `Toyota`, que herdam de `Carro` e usam `super()` para chamar o construtor da classe mãe:
+**Pergunta:** Por que criar um método específico como `adicionarSaldo(valor)` em vez de alterar diretamente o saldo? Quais seriam os riscos de permitir alterações sem controle?
 
-```java
-public Fiat() {
-    super("Fiat Argo", new Tanque(0));
-    this.arCondicionado = true;
-}
-```
+**Sua Resposta:**
 
-```java
-public Toyota() {
-    super("Toyota Corolla", new Tanque(0));
-    this.modoHibrido = true;
-}
-```
+Métodos específicos permitem centralizar as regras de negócio e controlar como os dados são modificados. Se qualquer parte do código pudesse alterar diretamente um valor, seria possível realizar operações inválidas e comprometer a consistência do sistema. No nosso projeto, o método `abastecer()` da classe `Tanque` verifica se a quantidade informada é positiva e se a capacidade máxima de 50 litros não será ultrapassada. Da mesma forma, o método `carregar()` da classe `Bateria` impede que a carga ultrapasse 100%. Dessa maneira, cada classe controla as operações relacionadas à sua própria responsabilidade. Isso reduz falhas de lógica e torna o comportamento dos objetos mais previsível.
 
-Dessa forma, as classes filhas aproveitam a estrutura já existente em `Carro`, enquanto adicionam suas próprias características.
+---
 
-## Métodos
+### Aula 3 - Encapsulamento
 
-### getModelo() e setModelo()
-Retornam e alteram o modelo do carro.
+**Pergunta:** Por que é seguro deixar os métodos `get` públicos, mas perigoso deixar os atributos originais públicos? Qual é a diferença entre entregar uma cópia de um documento e entregar o original?
 
-### acelerar()
-Aumenta a velocidade do carro. A quantidade deve ser maior que zero e a velocidade não pode ultrapassar 200 km/h.
+**Sua Resposta:**
 
-```java
-public void acelerar(int quantidade) {
-    if (quantidade > 0 && velocidade + quantidade <= 200) {
-        velocidade = velocidade + quantidade;
-    }
-}
-```
+Os métodos `get` permitem consultar informações sem conceder acesso direto aos atributos internos do objeto. Quando os atributos são privados, outras classes não podem modificá-los diretamente, preservando o encapsulamento. É semelhante a entregar uma cópia de um documento para consulta, em vez de permitir que outra pessoa altere o original. No projeto, atributos como `porcentagem`, `litros`, `modelo` e `velocidade` são privados. As consultas são realizadas por métodos públicos, enquanto as alterações acontecem por operações específicas que podem validar os valores recebidos. Assim, evitamos estados inválidos, como uma bateria com mais de 100% de carga ou um tanque com mais de 50 litros.
 
-### abastecer() (em Carro)
-O método `abastecer(int quantidade)` solicita que o objeto `Tanque` associado realize o abastecimento.
+---
 
-```java
-public void abastecer(int quantidade) {
-    tanque.abastecer(quantidade);
-}
-```
+### Aula 4 - Construtores
 
-A regra de negócio do abastecimento permanece sob responsabilidade da classe `Tanque`.
+**Pergunta:** Por que é um erro gerar getters e setters para tudo automaticamente? Como as decisões de não permitir alterações irrestritas protegem o sistema?
 
-### getTanque()
-O método `getTanque()` retorna os litros do tanque por meio do objeto `Tanque` associado.
+**Sua Resposta:**
 
-```java
-public int getTanque() {
-    return tanque.getLitros();
-}
-```
+Gerar getters e setters para todos os atributos sem avaliar sua necessidade pode permitir alterações que não fazem sentido para as regras de negócio. Um atributo privado perde parte de sua proteção se qualquer classe puder modificá-lo por meio de um setter público sem validação. No projeto, os construtores inicializam os objetos com os dados necessários e definem seus estados iniciais. A classe `Bateria`, por exemplo, valida a porcentagem recebida no construtor, enquanto o método `carregar()` controla as recargas posteriores. A classe `Tanque` também verifica se a quantidade inicial está dentro da capacidade permitida. Essas decisões evitam valores inválidos e mantêm as responsabilidades de cada classe bem definidas.
 
-### buzinar()
-Pertence à classe `Carro` e retorna o som padrão da buzina de um carro. Esse método é sobrescrito pelas classes filhas (veja a seção Polimorfismo de sobrescrita).
+---
 
-```java
-public String buzinar() {
-    return "Beep beep!";
-}
-```
+### Aula 5 - Associação
 
-### exibirTipo()
-Declarado como **método abstrato** na classe `Carro` (sem corpo) e implementado por `Fiat` e `Toyota`. Retorna o tipo do carro (veja a seção Classe abstrata).
+**Pergunta:** Por que receber o objeto inteiro no construtor pode ser melhor do que receber apenas uma `String` com o nome? O que acontece quando precisamos acessar comportamentos do objeto associado?
 
-```java
-public abstract String exibirTipo();
-```
+**Sua Resposta:**
 
-### ligar() e desligar()
-Declarados na interface `Ligavel` (sem corpo) e implementados por `Carro` (herdados por `Fiat` e `Toyota`), `Farol` e `Radio`, cada um do seu jeito (veja a seção Interface).
+Receber um objeto permite acessar não apenas uma informação isolada, mas também os comportamentos e as regras de negócio relacionados a ele. Uma `String` contendo somente um nome não permite executar operações próprias de outro objeto. No nosso projeto, o Tesla possui uma associação com um objeto da classe `Bateria`. Essa associação permite que o veículo solicite a recarga da bateria sem precisar controlar diretamente a porcentagem armazenada. A classe `Bateria` é responsável por validar a quantidade de carga recebida. Dessa maneira, cada classe mantém sua própria responsabilidade e o sistema fica mais organizado. A associação também facilita a reutilização e a manutenção do código.
 
-```java
-String ligar();
-String desligar();
-```
+---
 
-### getVelocidade()
-Retorna a velocidade atual.
+### Aula 6 - Herança
 
-### getLitros()
-Pertence à classe `Tanque` e retorna os litros atuais.
+**Pergunta:** Por que o Java não permite que uma classe filha altere diretamente os atributos privados da classe mãe? Qual princípio isso protege?
 
-```java
-public int getLitros() {
-    return litros;
-}
-```
+**Sua Resposta:**
 
-### abastecer() (em Tanque)
-Pertence à classe `Tanque` e aumenta os litros.
+O Java não permite o acesso direto aos atributos `private` de outra classe porque esses atributos estão protegidos pelo encapsulamento. Isso garante que a classe responsável pelos dados controle como eles são consultados e modificados. No projeto, `Tesla` e `Toyota` herdam de `Carro`, compartilhando características e comportamentos comuns, como o modelo, a velocidade e a aceleração. Entretanto, não precisam acessar diretamente os atributos privados da classe mãe. O acesso às informações ocorre por métodos públicos apropriados. Essa separação permite reutilizar o código sem comprometer a proteção dos dados. Além disso, cada classe filha pode implementar características específicas sem duplicar toda a estrutura da classe base.
 
-Regra de negócio:
+---
 
-* A quantidade deve ser maior que zero.
-* O tanque não pode passar de 50 litros.
+### Aula 7 - Polimorfismo
 
-```java
-public void abastecer(int quantidade) {
-    if (quantidade > 0 && litros + quantidade <= 50) {
-        litros = litros + quantidade;
-    }
-}
-```
+**Pergunta:** Se o método `calcularAutonomia()` não existisse na classe base, seria possível chamá-lo em um loop usando uma referência do tipo `Veiculo`? Por que o contrato precisa existir na base da hierarquia?
 
-### isArCondicionado() e setArCondicionado()
-Pertencem à classe `Fiat`: retornam e alteram o valor de `arCondicionado`.
+**Sua Resposta:**
 
-```java
-public boolean isArCondicionado() {
-    return arCondicionado;
-}
+Uma variável declarada com um tipo de referência só pode acessar os métodos disponíveis nesse tipo, considerando também os métodos herdados. Se um método não estiver declarado na classe base nem for herdado por ela, não poderemos chamá-lo diretamente usando uma referência desse tipo. No projeto, o método `exibirTipo()` é declarado como abstrato na classe `Carro` e implementado por `Tesla` e `Toyota`. Assim, podemos percorrer um array de `Carro` e chamar o método sem precisar verificar individualmente a classe de cada objeto. Cada veículo fornece sua própria implementação. Isso demonstra o polimorfismo e permite adicionar novos tipos de veículos com menos alterações no código principal.
 
-public void setArCondicionado(boolean arCondicionado) {
-    this.arCondicionado = arCondicionado;
-}
-```
+---
 
-### isModoHibrido() e setModoHibrido()
-Pertencem à classe `Toyota`: retornam e alteram o valor de `modoHibrido`.
+### Aula 8 - Classes Abstratas
 
-```java
-public boolean isModoHibrido() {
-    return modoHibrido;
-}
+**Pergunta:** Por que precisamos declarar explicitamente uma classe como `abstract`? Qual é o risco de permitir a criação de um objeto genérico que não representa um tipo específico?
 
-public void setModoHibrido(boolean modoHibrido) {
-    this.modoHibrido = modoHibrido;
-}
-```
+**Sua Resposta:**
 
-## Associação entre objetos
-Na aula de **17/09/26**, foi criada a classe `Tanque` para realizar uma associação com a classe `Carro`. O atributo que antes era um simples número (`combustivel`) passou a ser um objeto da classe `Tanque`:
+Uma classe abstrata representa uma estrutura geral que não deve ser instanciada diretamente. No projeto, `Carro` reúne características comuns, mas os veículos concretos são representados por classes como `Tesla` e `Toyota`. Declarar `Carro` como `abstract` informa explicitamente ao Java que essa classe deve servir como base para outras classes. O compilador não deduz essa intenção automaticamente, pois uma classe comum pode ser instanciável mesmo que seu nome represente algo genérico. Se não utilizássemos `abstract`, seria possível criar objetos diretamente de `Carro`, contrariando a estrutura desejada. A classe abstrata também exige que as subclasses concretas implementem o método abstrato `exibirTipo()`, garantindo um comportamento comum.
 
-```java
-private Tanque tanque;
-```
+---
 
-Essa associação permite que o `Carro` utilize os comportamentos do `Tanque`, enquanto o `Tanque` fica responsável por controlar seus litros e suas regras de negócio. O atributo `combustivel` e o método `getCombustivel()` deixaram de existir em `Carro`, pois essa informação agora pertence ao `Tanque`.
+### Aula 9 - Interfaces
 
-## Herança (Generalização)
-Na aula de **24/09/26**, foi aplicado o conceito de herança, também chamado de generalização. A classe `Carro` passou a atuar como superclasse, contendo características e comportamentos comuns aos diferentes tipos de carro.
+**Pergunta:** Por que Java permite implementar várias interfaces, mas não herdar de várias classes? Como as interfaces ajudam a evitar conflitos e permitem compartilhar comportamentos entre hierarquias diferentes?
 
-A classe `Fiat` herda de `Carro`:
+**Sua Resposta:**
 
-```java
-public class Fiat extends Carro {
-```
+As interfaces definem contratos de comportamento sem exigir que as classes pertençam à mesma hierarquia de herança. Java permite implementar várias interfaces porque isso possibilita que uma classe cumpra diferentes contratos sem herdar o estado e a implementação de múltiplas classes. A herança múltipla de classes poderia gerar ambiguidades caso diferentes classes mães definissem implementações conflitantes de um mesmo método. No projeto, `Ligavel` define as operações de ligar e desligar, implementadas pelos veículos, pelo farol e pelo rádio. Já `Recarregavel` define o comportamento de recarga, implementado por `Tesla` e `Bateria`. No `Main`, arrays dessas interfaces permitem chamar os comportamentos sem depender das classes concretas dos objetos.
 
-E a classe `Toyota` também herda de `Carro`:
+---
 
-```java
-public class Toyota extends Carro {
-```
+## Desafios Técnicos Implementados
 
-Por meio da herança, `Fiat` e `Toyota` recebem os métodos acessíveis de `Carro`, podendo utilizar comportamentos como:
+### Desafio Pessoal (Seu Projeto)
 
-* `getModelo()`
-* `setModelo()`
-* `acelerar()`
-* `getVelocidade()`
-* `abastecer()`
-* `getTanque()`
+**Qual foi o domínio que você escolheu para seu projeto pessoal?**
 
-Além disso, cada classe filha possui suas próprias características (`arCondicionado` na `Fiat` e `modoHibrido` na `Toyota`). Assim, a herança permite reutilizar o que é comum aos carros, enquanto cada filha tem o que é específico dela.
+O domínio escolhido foi um sistema de veículos elétricos e híbridos, com representação de veículos, controle de combustível e bateria recarregável.
 
-## Uso do super()
-Nas classes `Fiat` e `Toyota`, o `super()` é utilizado para chamar o construtor da classe mãe (`Carro`):
+**Quais classes você criou?**
 
-```java
-super("Fiat Argo", new Tanque(0));
-```
+- `Carro`: classe abstrata com características e comportamentos comuns aos veículos.
+- `Tesla`: representa um veículo elétrico e possui uma bateria associada.
+- `Toyota`: representa um veículo híbrido e possui um tanque associado.
+- `Tanque`: controla a quantidade de combustível e sua capacidade máxima.
+- `Bateria`: controla a porcentagem de carga e as regras de recarga.
+- `Farol`: representa um componente que pode ser ligado e desligado.
+- `Radio`: representa outro componente que pode ser ligado e desligado.
+- `Ligavel`: interface que define o contrato de ligar e desligar.
+- `Recarregavel`: interface que define o contrato de recarga.
+- `Main`: contém os arrays polimórficos e as chamadas dos métodos por meio das interfaces.
 
-O `super()` permite que a classe filha utilize o construtor da classe mãe para inicializar as características que pertencem à estrutura de `Carro`, evitando duplicar na filha a lógica de inicialização de `modelo` e `tanque`.
+**Qual foi o maior desafio técnico que você enfrentou?**
 
-## Encapsulamento e herança
-Os atributos das classes são privados (`private`) para proteger o estado dos objetos. Na herança, a classe filha possui acesso aos comportamentos disponibilizados pela classe mãe, mas não acessa diretamente os atributos privados dela.
+O maior desafio técnico foi integrar os conceitos dos dois projetos sem perder a coerência entre as classes e suas responsabilidades. Inicialmente, a classe `Carro` possuía um tanque de combustível associado, o que não representava adequadamente um veículo elétrico como o Tesla. Para resolver isso, o tanque passou a pertencer ao Toyota, enquanto o Tesla recebeu uma bateria recarregável associada. Outro desafio foi organizar as interfaces para que diferentes objetos pudessem executar comportamentos comuns. A interface `Ligavel` foi mantida para ligar e desligar veículos e componentes, enquanto a interface `Recarregavel` foi criada para controlar o contrato de recarga. A classe `Bateria` implementa esse contrato e continua responsável pela validação da porcentagem de carga. O Tesla delega a operação de recarga à bateria, evitando duplicar regras de negócio. Por fim, o `Main` foi simplificado para demonstrar o polimorfismo por meio de arrays de classes abstratas e interfaces, sem realizar testes individuais de cada objeto. Essa reorganização tornou o projeto mais coerente e demonstrou como associação, herança, polimorfismo e interfaces podem trabalhar em conjunto.
 
-Por exemplo, `Fiat` e `Toyota` não alteram diretamente `modelo` ou `tanque`. Para trabalhar com essas informações, utilizam os métodos da classe mãe, como `getModelo()`, `setModelo()`, `acelerar()` e `abastecer()`. Assim, o encapsulamento continua sendo aplicado mesmo com a utilização da herança.
+---
 
-## Polimorfismo de sobrescrita
-Na aula de **01/10/26**, foi aplicado o polimorfismo de sobrescrita (override). A classe `Carro` possui o método `buzinar()` com um comportamento padrão, e as classes filhas `Fiat` e `Toyota` sobrescrevem esse método, mantendo a mesma assinatura, mas com um comportamento próprio. A anotação `@Override` indica que o método está sendo sobrescrito:
+## Conclusão
 
-```java
-// Na classe Carro
-public String buzinar() {
-    return "Beep beep!";
-}
-```
+**O que você aprendeu nestas 9 aulas?**
 
-```java
-// Na classe Fiat
-@Override
-public String buzinar() {
-    return "Fiat: Pi-pi!";
-}
-```
+Ao longo das nove aulas, aprendi a organizar programas utilizando os princípios da Programação Orientada a Objetos. Compreendi como classes e objetos representam elementos de um sistema e como métodos definem seus comportamentos. Aprendi a proteger os atributos com encapsulamento, inicializar objetos por meio de construtores e relacionar objetos por associação. Também compreendi como a herança permite reutilizar características comuns, enquanto o polimorfismo permite executar comportamentos diferentes por meio de uma referência genérica. As classes abstratas ajudam a definir estruturas que não devem ser instanciadas diretamente. Por fim, as interfaces permitem estabelecer contratos compartilhados por classes diferentes, tornando o código mais flexível e organizado.
 
-```java
-// Na classe Toyota
-@Override
-public String buzinar() {
-    return "Toyota: Pim-pim!";
-}
-```
+**Qual conceito foi mais difícil de entender?**
 
-O polimorfismo aparece quando uma variável do tipo `Carro` guarda objetos de classes diferentes (`Fiat` e `Toyota`, pois as filhas também são `Carro`). A chamada é sempre a mesma (`c.buzinar()`), mas o resultado muda conforme o objeto real:
+O conceito mais difícil foi compreender como associação e interfaces se relacionam com o polimorfismo. Inicialmente, pode parecer que basta colocar todos os comportamentos em uma única classe, mas isso dificulta a manutenção e mistura responsabilidades. Durante a integração, ficou mais claro que a bateria deve controlar sua própria carga, enquanto o Tesla utiliza a bateria por associação. A interface `Recarregavel` permite que os dois tipos de objeto ofereçam o comportamento de recarga sem depender da mesma classe base. Com a implementação dos arrays polimórficos, compreendi melhor como chamar métodos por meio de contratos comuns, mesmo quando os objetos possuem estruturas diferentes.
 
-```java
-Carro[] carros = { fiat, toyota };
-
-for (Carro c : carros) {
-    System.out.println(c.getModelo() + " -> " + c.buzinar());
-}
-```
+**O que você melhoraria no seu projeto se pudesse refazer?**
 
-Dessa forma, o código que usa `Carro` não precisa saber qual é o tipo exato de cada carro: o Java escolhe automaticamente a versão correta do método em tempo de execução.
-
-## Classe abstrata
-Na aula de **15/10/26**, a classe `Carro` foi transformada em uma **classe abstrata** com a palavra-chave `abstract`. Uma classe abstrata serve de modelo para as classes filhas e **não pode ser instanciada**: `new Carro(...)` passou a gerar erro de compilação. Na prática isso faz sentido, pois no mundo real não existe "um carro genérico", e sim um Fiat, um Toyota e assim por diante.
-
-```java
-public abstract class Carro {
-```
-
-Também foi criado o método abstrato `exibirTipo()`, que só tem a assinatura e **não tem corpo**. Assim, cada classe filha é **obrigada** a implementar o seu próprio `exibirTipo()`; se esquecer, o código não compila:
-
-```java
-// Na classe Carro
-public abstract String exibirTipo();
-```
-
-```java
-// Na classe Fiat
-@Override
-public String exibirTipo() {
-    return "Hatch compacto";
-}
-```
-
-```java
-// Na classe Toyota
-@Override
-public String exibirTipo() {
-    return "Sedan medio";
-}
-```
-
-Com isso, `Carro` define **o que** todo carro deve ter (um tipo), e cada filha define **como** isso é feito. A classe abstrata continua podendo ser usada como tipo, então o polimorfismo segue funcionando: um array de `Carro` guarda `Fiat` e `Toyota`, e cada chamada de `exibirTipo()` executa a versão da classe real do objeto. O `Main.java` precisou ser alterado para não criar mais um `Carro` diretamente.
-
-## Interface
-Na aula de **22/10/26**, foi aplicado o conceito de interface. Uma interface define um **comportamento** (um "contrato") que classes diferentes podem ter, sem dizer como ele é feito: os métodos da interface não têm corpo, e cada classe que a implementa com `implements` é **obrigada** a escrever o seu. Foi criada a interface `Ligavel`, com os métodos `ligar()` e `desligar()`:
-
-```java
-public interface Ligavel {
-    String ligar();
-    String desligar();
-}
-```
-
-(A interface completa, com a documentação JavaDoc, aparece na seção do checklist de Clean Code mais abaixo.)
-
-A classe `Carro` implementa `Ligavel`, e como `Carro` é abstrata, `Fiat` e `Toyota` herdam `ligar()` e `desligar()` prontos:
-
-```java
-public abstract class Carro implements Ligavel {
-
-    @Override
-    public String ligar() {
-        return modelo + ": motor ligado";
-    }
-
-    @Override
-    public String desligar() {
-        return modelo + ": motor desligado";
-    }
-}
-```
-
-Também foram criadas duas classes que **não têm relação de herança com `Carro`**, mas também implementam `Ligavel`:
-
-```java
-public class Farol implements Ligavel {
-
-    @Override
-    public String ligar() {
-        return "Farol aceso";
-    }
-
-    @Override
-    public String desligar() {
-        return "Farol apagado";
-    }
-}
-```
-
-```java
-public class Radio implements Ligavel {
-
-    @Override
-    public String ligar() {
-        return "Radio tocando";
-    }
-
-    @Override
-    public String desligar() {
-        return "Radio desligado";
-    }
-}
-```
-
-A interface permite que objetos de hierarquias totalmente diferentes (`Fiat`, `Toyota`, `Farol` e `Radio`) sejam tratados pelo mesmo tipo (`Ligavel`). Se uma classe declarar `implements Ligavel` e esquecer um dos métodos, o código não compila (`Radio is not abstract and does not override abstract method desligar() in Ligavel`).
-
-A diferença para a classe abstrata é que a classe abstrata representa o que o objeto **é** (um `Carro`) e pode ter atributos e métodos prontos, enquanto a interface representa o que o objeto **sabe fazer** (ser ligado), e classes sem nenhuma relação entre si podem implementá-la.
-
-## Testes
-Na aula de **24/09/26**, o `Main.java` foi atualizado para testar os objetos das classes filhas `Fiat` e `Toyota`. Na aula de **01/10/26** foi acrescentado o teste do polimorfismo de sobrescrita, na aula de **15/10/26**, o teste da classe abstrata e, na aula de **22/10/26**, o teste da interface.
-
-Primeiramente, foi criado um objeto `Fiat`:
-
-```java
-Fiat fiat = new Fiat();
-```
-
-Depois, foram testados seu modelo, o ar-condicionado, a velocidade e o tanque. Em seguida, foi criado um objeto `Toyota`:
-
-```java
-Toyota toyota = new Toyota();
-```
-
-Também foram testados seu modelo, o modo híbrido, a velocidade e o tanque. Foi testada a regra de negócio tentando abastecer a `Fiat` além do limite. Por fim, foi criado um array de `Carro` com a `Fiat` e a `Toyota` para chamar `buzinar()` e `exibirTipo()` em cada um. Além disso, foi criado um array do tipo `Ligavel` com `Fiat`, `Toyota`, `Farol` e `Radio` para chamar `ligar()` e `desligar()` em cada um.
-
-A saída obtida foi:
-
-```text
-FIAT
-Modelo: Fiat Argo
-Ar-condicionado: true
-Velocidade: 60 km/h
-Tanque: 40 L
-
-TOYOTA
-Modelo: Toyota Corolla
-Modo hibrido: true
-Velocidade: 80 km/h
-Tanque: 30 L
-
-Tanque da Fiat apos tentar passar do limite: 40 L
-
-POLIMORFISMO
-Fiat Argo -> Fiat: Pi-pi! | Tipo: Hatch compacto
-Toyota Corolla -> Toyota: Pim-pim! | Tipo: Sedan medio
-
-INTERFACE LIGAVEL
-Fiat Argo: motor ligado
-Fiat Argo: motor desligado
-Toyota Corolla: motor ligado
-Toyota Corolla: motor desligado
-Farol aceso
-Farol apagado
-Radio tocando
-Radio desligado
-```
-
-Os testes demonstram que `Fiat` e `Toyota` conseguem utilizar os comportamentos herdados de `Carro`, além de apresentarem suas próprias características, sobrescreverem `buzinar()`, implementarem o método abstrato `exibirTipo()` e serem tratadas pela interface `Ligavel` junto com classes de outras hierarquias.
-
-## Projeto Carro - Microdesafio Pessoal "Transforme em Abstrata" - Aula 15/10/26
-
-**Analise sua classe principal. Faz sentido existir um objeto APENAS `Carro`, sem ser uma Fiat, uma Toyota ou outro modelo específico?**
-
-Não. No mundo real não existe um "carro genérico": todo carro que existe é de uma marca e de um modelo, como uma Fiat ou uma Toyota. `Carro` é apenas o conceito geral que reúne o que todos têm em comum (modelo, tanque, velocidade, acelerar, abastecer). Por isso a classe foi transformada em `abstract`:
-
-```java
-public abstract class Carro {
-```
-
-**Método abstrato que todas as subclasses devem implementar:** foi criado o `exibirTipo()`, que só tem a assinatura em `Carro` e é implementado de forma diferente em cada filha: `"Hatch compacto"` na `Fiat` e `"Sedan medio"` na `Toyota`.
-
-```java
-public abstract String exibirTipo();
-```
-
-**Teste: tentar criar um objeto da classe abstrata.** No `Main.java`, a linha abaixo foi testada e gerou erro de compilação:
-
-```java
-Carro carro = new Carro("Gol", new Tanque(0));
-```
-
-```text
-Carro is abstract; cannot be instantiated
-```
-
-Como a classe abstrata é só um modelo, o Java não permite criar objetos dela. Depois do teste, a linha foi deixada comentada para o projeto continuar compilando.
-
-**Prova de que as subclasses funcionam:** os objetos foram criados normalmente pelas classes filhas (`new Fiat()` e `new Toyota()`) e cada um respondeu com a sua própria implementação de `exibirTipo()`:
-
-```text
-Fiat Argo -> Fiat: Pi-pi! | Tipo: Hatch compacto
-Toyota Corolla -> Toyota: Pim-pim! | Tipo: Sedan medio
-```
-
-## Projeto Carro - Microdesafio Pessoal "Crie suas Interfaces" - Aula 22/10/26
-
-**Pense em um comportamento que objetos diferentes podem ter.**
-
-O comportamento escolhido foi **poder ser ligado e desligado**. Um carro liga, um farol liga e um rádio liga, mas são objetos de naturezas diferentes e sem relação de herança entre si.
-
-**Crie uma interface com 1 ou 2 métodos.** Foi criada a interface `Ligavel`, com dois métodos:
-
-```java
-public interface Ligavel {
-    String ligar();
-    String desligar();
-}
-```
-
-**Faça 2 ou 3 classes, de hierarquias diferentes, implementarem a interface.** Foram feitas três implementações:
-
-* `Carro` (hierarquia `Carro`, `Fiat`, `Toyota`): liga e desliga o motor.
-* `Farol`: acende e apaga.
-* `Radio`: toca e desliga.
-
-**No `main`, crie um array da interface e chame os métodos polimorficamente.** Foi criado um array do tipo `Ligavel` com objetos das três hierarquias, e a mesma chamada produz um resultado diferente conforme o objeto real:
-
-```java
-Ligavel[] ligaveis = { fiat, toyota, new Farol(), new Radio() };
-
-for (Ligavel item : ligaveis) {
-    System.out.println(item.ligar());
-    System.out.println(item.desligar());
-}
-```
-
-```text
-Fiat Argo: motor ligado
-Fiat Argo: motor desligado
-Toyota Corolla: motor ligado
-Toyota Corolla: motor desligado
-Farol aceso
-Farol apagado
-Radio tocando
-Radio desligado
-```
-
-## Projeto Carro - Checklist Clean Code (Interfaces) - Aula 22/10/26
-
-A interface `Ligavel` foi conferida contra o checklist de Clean Code para interfaces:
-
-* **Nome descritivo:** `Ligavel` é um adjetivo que indica uma **capacidade** (poder ser ligado), como `Recarregavel`, `Voavel` e `Pagavel`.
-* **Convenção "able":** em inglês seria `Switchable`; em português, usamos o adjetivo terminado em "-vel", que tem a mesma função.
-* **Contrato claro:** `ligar()` e `desligar()` fazem parte de um único comportamento coeso (ligar e desligar um objeto), sem misturar responsabilidades aleatórias.
-* **Poucos métodos:** a interface tem apenas 2 métodos, o que facilita a implementação por qualquer classe (Interface Segregation Principle). Por isso `Farol` e `Radio` precisam implementar só o que realmente fazem.
-* **Documentação:** a interface foi documentada com JavaDoc, explicando **o que esperar de quem a implementa**: retornar uma mensagem descrevendo o que aconteceu, nunca retornar `null` nem vazio e não lançar exceção se for chamado mais de uma vez seguida.
-
-```java
-/**
- * Contrato para objetos que podem ser LIGADOS e DESLIGADOS.
- *
- * <p>Quem implementa esta interface deve garantir que:
- * <ul>
- *   <li>{@link #ligar()} coloque o objeto em funcionamento e retorne uma mensagem
- *       descrevendo o que aconteceu;</li>
- *   <li>{@link #desligar()} interrompa o funcionamento e retorne uma mensagem
- *       descrevendo o que aconteceu;</li>
- *   <li>as mensagens retornadas nunca sejam {@code null} nem vazias;</li>
- *   <li>nenhum dos dois metodos lance excecao se for chamado mais de uma vez seguida.</li>
- * </ul>
- */
-public interface Ligavel {
-```
-
-## Projeto Carro - Pergunta de Reflexão "Clean Code" - Aula 10/09/26
-
-**Pensando no mundo real e no Clean Code: Por que é um erro gravíssimo clicar em "Gerar Getters e Setters para tudo" automaticamente na sua IDE? Como as nossas decisões protegem o sistema de fraudes e falhas de lógica?**
-
-Gerar getters e setters para tudo pode causar um sério problema de informações não reais. Nem toda informação do objeto deve ser alterada livremente. Se existisse um `setLitros()` público no `Tanque`, qualquer pessoa poderia colocar 500 litros num tanque de 50, invalidando a lógica do sistema, mesmo com o atributo privado.
-
-Por isso, em vez de um setter, usamos métodos que representem ações reais do objeto e validem a regra, como o `abastecer()`:
-
-```java
-public void abastecer(int quantidade) {
-    if (quantidade > 0 && litros + quantidade <= 50) {
-        litros = litros + quantidade;
-    }
-}
-```
-
-O usuário não define qualquer valor: ele informa quanto quer adicionar, e o sistema verifica se a quantidade é maior que zero e se o tanque não passará de 50 litros.
-
-## Projeto Carro - Pergunta de reflexão "Associação entre objetos" - Aula 17/09/26
-
-**Se o `Carro` só precisa mostrar dados do tanque, não seria mais simples e mais leve guardar apenas um `int` com os litros em vez do objeto `Tanque`?**
-
-Não. Um `int` guarda apenas o dado, e um objeto guarda o dado mais o comportamento e as regras. Se o `Carro` tivesse só um número, ele precisaria conhecer e repetir a regra do limite de 50 litros para poder abastecer. Com o objeto `Tanque`, o `Carro` apenas pede `tanque.abastecer(quantidade)` e cada classe mantém suas próprias responsabilidades, deixando o código mais organizado.
-
-## Projeto Carro - Pergunta de reflexão "A Árvore Genealógica - Herança (Generalização)" - Aula 24/09/26
-
-**No nosso código, a mãe `Carro` possui o atributo `modelo` como `private`. Quando `Fiat` herda de `Carro`, ela recebe esse atributo, mas o código dentro de `Fiat` NÃO consegue fazer `this.modelo = "ABC"`. Ela é obrigada a usar o `super()` ou o `setModelo()`. Por que o Java não deixa a filha alterar as variáveis privadas da mãe diretamente? Qual o princípio das aulas passadas que isso está protegendo?**
-
-O Java não permite que a classe filha altere diretamente os atributos `private` da classe mãe porque esses atributos estão encapsulados e só podem ser acessados diretamente dentro da própria classe onde foram declarados. Isso protege os dados de alterações indevidas e permite que a classe mãe controle como seus atributos serão modificados. Por isso, a filha precisa utilizar o construtor com `super()` ou métodos como `setModelo()`, preservando o **encapsulamento** (princípio das aulas anteriores).
-
-Neste projeto, isso se aplica aos atributos `modelo` e `tanque` de `Carro`. As classes `Fiat` e `Toyota`, mesmo herdando de `Carro`, não os alteram diretamente: usam `super()` e métodos como `setModelo()`. Assim, os dados continuam protegidos e organizados dentro da estrutura de herança.
-
-## Evolução do projeto
-
-### 20/08/26
-* Criação da classe `Carro`.
-* Definição dos atributos `modelo`, `combustivel` e `velocidade`.
-* Criação dos métodos `acelerar()` e `abastecer()` com regras para impedir valores inválidos.
-* Criação do `Main.java` para testar o funcionamento do objeto.
-* Identificação do problema dos atributos públicos.
-
-### 10/09/26
-* Aplicação do encapsulamento: atributos passaram a ser privados (`private`).
-* Criação dos métodos `getModelo()`, `setModelo()`, `getVelocidade()` e `getCombustivel()`.
-* Alteração do `Main.java` para usar os métodos de acesso e testar valores inválidos.
-* Adição da reflexão sobre getters, setters e proteção contra falhas de lógica.
-* Criação do construtor da classe `Carro`, exigindo o modelo como parâmetro obrigatório.
-* Utilização do método `setModelo()` no construtor.
-* Alteração do `Main.java` para utilizar o novo construtor.
-
-### 17/09/26
-* Criação da nova classe `Tanque`.
-* Criação do atributo `litros`, do construtor, de `getLitros()` e de `abastecer()` na classe `Tanque`.
-* Associação entre as classes `Carro` e `Tanque`.
-* Substituição do atributo `combustivel` do `Carro` pelo objeto `Tanque`.
-* Atualização do construtor de `Carro` para receber um objeto `Tanque`.
-* Atualização do método `abastecer()` para utilizar o objeto `Tanque` associado.
-* Criação de `getTanque()` e remoção de `getCombustivel()`.
-* Adição da reflexão sobre associação entre objetos e responsabilidades das classes.
-
-### 24/09/26
-* Aplicação do conceito de herança (generalização).
-* Utilização da classe `Carro` como superclasse.
-* Criação das classes `Fiat` e `Toyota` como classes filhas de `Carro`.
-* Utilização de `extends` para estabelecer a herança entre as classes.
-* Utilização de `super()` para chamar o construtor da classe `Carro`.
-* Definição dos modelos `Fiat Argo` e `Toyota Corolla`.
-* Criação do atributo `arCondicionado` na classe `Fiat` e `modoHibrido` na classe `Toyota`.
-* Criação dos métodos `isArCondicionado()`, `setArCondicionado()`, `isModoHibrido()` e `setModoHibrido()`.
-* Atualização do `Main.java` para testar objetos `Fiat` e `Toyota`.
-* Teste dos comportamentos herdados de `Carro` e das características específicas de cada classe filha.
-* Adição da reflexão sobre herança, generalização e proteção dos atributos privados por meio do encapsulamento.
-
-### 01/10/26
-* Aplicação do polimorfismo de sobrescrita.
-* Criação do método `buzinar()` na classe `Carro`.
-* Sobrescrita do método `buzinar()` nas classes `Fiat` e `Toyota` com `@Override`.
-* Atualização do `Main.java` com um array de `Carro` para demonstrar o polimorfismo.
-
-### 15/10/26
-* Transformação da classe `Carro` em classe abstrata (`abstract`).
-* Criação do método abstrato `exibirTipo()` na classe `Carro`.
-* Implementação de `exibirTipo()` nas classes `Fiat` e `Toyota` com `@Override`.
-* Atualização do `Main.java`, que deixou de instanciar `Carro` diretamente e passou a testar `exibirTipo()`.
-* Resolução do microdesafio "Transforme em Abstrata" com a análise da classe `Carro`.
-* Teste de criação de objeto da classe abstrata, que gerou erro de compilação.
-* Adição da resposta do microdesafio ao README.
-
-### 22/10/26
-* Aplicação do conceito de interface.
-* Criação da interface `Ligavel` com os métodos `ligar()` e `desligar()`.
-* Implementação de `Ligavel` na classe `Carro`, herdada por `Fiat` e `Toyota`.
-* Criação das classes `Farol` e `Radio`, de hierarquias diferentes, que também implementam `Ligavel`.
-* Atualização do `Main.java` com um array do tipo `Ligavel` para demonstrar o polimorfismo.
-* Resolução do microdesafio "Crie suas Interfaces" e adição da resposta ao README.
-* Aplicação do checklist de Clean Code para interfaces (nome descritivo, contrato coeso e poucos métodos).
-* Documentação da interface `Ligavel` com JavaDoc, explicando o que esperar de quem a implementa.
+Se pudesse refazer o projeto, melhoraria a organização dos pacotes, separando as classes de domínio, as interfaces e a classe principal. Também adicionaria testes automatizados para verificar os limites de combustível e de carga da bateria, além de testar aceleração, herança e implementações das interfaces. Outra melhoria seria desenvolver um controle mais completo da recarga do Tesla, incluindo estados de carga e regras específicas de utilização. Também documentaria melhor as responsabilidades de cada classe e ampliaria os testes para verificar o comportamento de novos veículos sem precisar modificar o código principal. Essas melhorias ajudariam a tornar o sistema mais fácil de manter, testar e expandir.

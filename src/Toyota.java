@@ -1,34 +1,36 @@
-// extends: Toyota HERDA tudo que e acessivel em Carro (acelerar, abastecer, getters...)
+
 public class Toyota extends Carro {
 
-    // Caracteristica propria da Toyota (nao existe em Carro)
     private boolean modoHibrido;
+    private Tanque tanque;
 
     public Toyota() {
-        // super(): chama o construtor de Carro para definir modelo e tanque
-        super("Toyota Corolla", new Tanque(0));
+        super("Toyota Corolla");
         this.modoHibrido = true;
+        this.tanque = new Tanque(0);
     }
 
-    // Retorna se o modo hibrido esta disponivel
     public boolean isModoHibrido() {
         return modoHibrido;
     }
 
-    // Ativa ou desativa o modo hibrido
     public void setModoHibrido(boolean modoHibrido) {
         this.modoHibrido = modoHibrido;
     }
 
-    // Implementacao OBRIGATORIA do metodo abstrato exibirTipo() declarado em Carro
-    @Override
-    public String exibirTipo() {
-        return "Sedan medio";
+    public void abastecer(int quantidade) {
+        tanque.abastecer(quantidade);
     }
 
-    // @Override: indica que estamos SOBRESCREVENDO o metodo buzinar() herdado de
-    // Carro.
-    // Mesma assinatura, mas com o comportamento proprio da Toyota.
+    public int getTanque() {
+        return tanque.getLitros();
+    }
+
+    @Override
+    public String exibirTipo() {
+        return "Sedan híbrido";
+    }
+
     @Override
     public String buzinar() {
         return "Toyota: Pim-pim!";
