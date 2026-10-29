@@ -1,6 +1,8 @@
 // abstract: Carro agora e uma classe ABSTRATA.
 // Ela serve de modelo para as filhas e NAO pode mais ser instanciada (new Carro(...) da erro).
-public abstract class Carro {
+// implements Ligavel: o Carro tambem cumpre o contrato da interface Ligavel.
+// Como Carro e abstrata, Fiat e Toyota HERDAM ligar() e desligar() prontos.
+public abstract class Carro implements Ligavel {
 
     // Atributos privados: so a propria classe consegue mexer neles diretamente
     private String modelo; // modelo do carro (ex: Gol)
@@ -36,6 +38,18 @@ public abstract class Carro {
     // A regra de negocio (limite de 50 L) continua sendo do Tanque.
     public void abastecer(int quantidade) {
         tanque.abastecer(quantidade);
+    }
+
+    // Implementacao do metodo da interface Ligavel: liga o motor do carro
+    @Override
+    public String ligar() {
+        return modelo + ": motor ligado";
+    }
+
+    // Implementacao do metodo da interface Ligavel: desliga o motor do carro
+    @Override
+    public String desligar() {
+        return modelo + ": motor desligado";
     }
 
     // Faz o carro buzinar. Este e o comportamento PADRAO de qualquer carro.

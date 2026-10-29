@@ -4,15 +4,18 @@ Atividade realizada em classe no dia **20/08/26** na aula de Programação Orien
 ## Sobre o projeto
 Este projeto foi desenvolvido em Java utilizando conceitos de Programação Orientada a Objetos (POO), no qual o objeto escolhido foi um **carro**, representando o veículo utilizado no mundo real.
 
-Ao longo das aulas, o projeto evoluiu com a aplicação de encapsulamento, construtores, associação entre objetos, herança (generalização), polimorfismo de sobrescrita e classe abstrata. Atualmente, a classe `Carro` é a superclasse do projeto, utilizada por diferentes tipos de carro, como `Fiat` e `Toyota`.
+Ao longo das aulas, o projeto evoluiu com a aplicação de encapsulamento, construtores, associação entre objetos, herança (generalização), polimorfismo de sobrescrita, classe abstrata e interface. Atualmente, a classe `Carro` é a superclasse do projeto, utilizada por diferentes tipos de carro, como `Fiat` e `Toyota`.
 
 ## Classes
 Atualmente, o projeto possui as seguintes classes:
 
-* `Carro`: superclasse **abstrata** que representa as características e comportamentos comuns aos carros. Não pode ser instanciada diretamente.
+* `Ligavel`: interface que define o comportamento de poder ser ligado e desligado (`ligar()` e `desligar()`).
+* `Carro`: superclasse **abstrata** que representa as características e comportamentos comuns aos carros. Não pode ser instanciada diretamente. Implementa `Ligavel`.
 * `Fiat`: classe filha de `Carro`, representando um carro da Fiat. Sobrescreve `buzinar()` e implementa `exibirTipo()`.
 * `Toyota`: classe filha de `Carro`, representando um carro da Toyota. Sobrescreve `buzinar()` e implementa `exibirTipo()`.
 * `Tanque`: classe responsável por representar o tanque e controlar seus litros.
+* `Farol`: classe que representa o farol do carro. Implementa `Ligavel` e não tem relação de herança com `Carro`.
+* `Radio`: classe que representa o rádio do carro. Implementa `Ligavel` e não tem relação de herança com `Carro`.
 * `Main`: classe responsável por criar os objetos e realizar os testes do projeto.
 
 ## Atributos
@@ -122,6 +125,14 @@ Declarado como **método abstrato** na classe `Carro` (sem corpo) e implementado
 
 ```java
 public abstract String exibirTipo();
+```
+
+### ligar() e desligar()
+Declarados na interface `Ligavel` (sem corpo) e implementados por `Carro` (herdados por `Fiat` e `Toyota`), `Farol` e `Radio`, cada um do seu jeito (veja a seção Interface).
+
+```java
+String ligar();
+String desligar();
 ```
 
 ### getVelocidade()
@@ -297,8 +308,73 @@ public String exibirTipo() {
 
 Com isso, `Carro` define **o que** todo carro deve ter (um tipo), e cada filha define **como** isso é feito. A classe abstrata continua podendo ser usada como tipo, então o polimorfismo segue funcionando: um array de `Carro` guarda `Fiat` e `Toyota`, e cada chamada de `exibirTipo()` executa a versão da classe real do objeto. O `Main.java` precisou ser alterado para não criar mais um `Carro` diretamente.
 
+## Interface
+Na aula de **22/10/26**, foi aplicado o conceito de interface. Uma interface define um **comportamento** (um "contrato") que classes diferentes podem ter, sem dizer como ele é feito: os métodos da interface não têm corpo, e cada classe que a implementa com `implements` é **obrigada** a escrever o seu. Foi criada a interface `Ligavel`, com os métodos `ligar()` e `desligar()`:
+
+```java
+public interface Ligavel {
+    String ligar();
+    String desligar();
+}
+```
+
+(A interface completa, com a documentação JavaDoc, aparece na seção do checklist de Clean Code mais abaixo.)
+
+A classe `Carro` implementa `Ligavel`, e como `Carro` é abstrata, `Fiat` e `Toyota` herdam `ligar()` e `desligar()` prontos:
+
+```java
+public abstract class Carro implements Ligavel {
+
+    @Override
+    public String ligar() {
+        return modelo + ": motor ligado";
+    }
+
+    @Override
+    public String desligar() {
+        return modelo + ": motor desligado";
+    }
+}
+```
+
+Também foram criadas duas classes que **não têm relação de herança com `Carro`**, mas também implementam `Ligavel`:
+
+```java
+public class Farol implements Ligavel {
+
+    @Override
+    public String ligar() {
+        return "Farol aceso";
+    }
+
+    @Override
+    public String desligar() {
+        return "Farol apagado";
+    }
+}
+```
+
+```java
+public class Radio implements Ligavel {
+
+    @Override
+    public String ligar() {
+        return "Radio tocando";
+    }
+
+    @Override
+    public String desligar() {
+        return "Radio desligado";
+    }
+}
+```
+
+A interface permite que objetos de hierarquias totalmente diferentes (`Fiat`, `Toyota`, `Farol` e `Radio`) sejam tratados pelo mesmo tipo (`Ligavel`). Se uma classe declarar `implements Ligavel` e esquecer um dos métodos, o código não compila (`Radio is not abstract and does not override abstract method desligar() in Ligavel`).
+
+A diferença para a classe abstrata é que a classe abstrata representa o que o objeto **é** (um `Carro`) e pode ter atributos e métodos prontos, enquanto a interface representa o que o objeto **sabe fazer** (ser ligado), e classes sem nenhuma relação entre si podem implementá-la.
+
 ## Testes
-Na aula de **24/09/26**, o `Main.java` foi atualizado para testar os objetos das classes filhas `Fiat` e `Toyota`. Na aula de **01/10/26** foi acrescentado o teste do polimorfismo de sobrescrita e, na aula de **15/10/26**, o teste da classe abstrata.
+Na aula de **24/09/26**, o `Main.java` foi atualizado para testar os objetos das classes filhas `Fiat` e `Toyota`. Na aula de **01/10/26** foi acrescentado o teste do polimorfismo de sobrescrita, na aula de **15/10/26**, o teste da classe abstrata e, na aula de **22/10/26**, o teste da interface.
 
 Primeiramente, foi criado um objeto `Fiat`:
 
@@ -312,7 +388,7 @@ Depois, foram testados seu modelo, o ar-condicionado, a velocidade e o tanque. E
 Toyota toyota = new Toyota();
 ```
 
-Também foram testados seu modelo, o modo híbrido, a velocidade e o tanque. Foi testada a regra de negócio tentando abastecer a `Fiat` além do limite. Por fim, foi criado um array de `Carro` com a `Fiat` e a `Toyota` para chamar `buzinar()` e `exibirTipo()` em cada um.
+Também foram testados seu modelo, o modo híbrido, a velocidade e o tanque. Foi testada a regra de negócio tentando abastecer a `Fiat` além do limite. Por fim, foi criado um array de `Carro` com a `Fiat` e a `Toyota` para chamar `buzinar()` e `exibirTipo()` em cada um. Além disso, foi criado um array do tipo `Ligavel` com `Fiat`, `Toyota`, `Farol` e `Radio` para chamar `ligar()` e `desligar()` em cada um.
 
 A saída obtida foi:
 
@@ -334,9 +410,19 @@ Tanque da Fiat apos tentar passar do limite: 40 L
 POLIMORFISMO
 Fiat Argo -> Fiat: Pi-pi! | Tipo: Hatch compacto
 Toyota Corolla -> Toyota: Pim-pim! | Tipo: Sedan medio
+
+INTERFACE LIGAVEL
+Fiat Argo: motor ligado
+Fiat Argo: motor desligado
+Toyota Corolla: motor ligado
+Toyota Corolla: motor desligado
+Farol aceso
+Farol apagado
+Radio tocando
+Radio desligado
 ```
 
-Os testes demonstram que `Fiat` e `Toyota` conseguem utilizar os comportamentos herdados de `Carro`, além de apresentarem suas próprias características, sobrescreverem `buzinar()` e implementarem o método abstrato `exibirTipo()`.
+Os testes demonstram que `Fiat` e `Toyota` conseguem utilizar os comportamentos herdados de `Carro`, além de apresentarem suas próprias características, sobrescreverem `buzinar()`, implementarem o método abstrato `exibirTipo()` e serem tratadas pela interface `Ligavel` junto com classes de outras hierarquias.
 
 ## Projeto Carro - Microdesafio Pessoal "Transforme em Abstrata" - Aula 15/10/26
 
@@ -371,6 +457,76 @@ Como a classe abstrata é só um modelo, o Java não permite criar objetos dela.
 ```text
 Fiat Argo -> Fiat: Pi-pi! | Tipo: Hatch compacto
 Toyota Corolla -> Toyota: Pim-pim! | Tipo: Sedan medio
+```
+
+## Projeto Carro - Microdesafio Pessoal "Crie suas Interfaces" - Aula 22/10/26
+
+**Pense em um comportamento que objetos diferentes podem ter.**
+
+O comportamento escolhido foi **poder ser ligado e desligado**. Um carro liga, um farol liga e um rádio liga, mas são objetos de naturezas diferentes e sem relação de herança entre si.
+
+**Crie uma interface com 1 ou 2 métodos.** Foi criada a interface `Ligavel`, com dois métodos:
+
+```java
+public interface Ligavel {
+    String ligar();
+    String desligar();
+}
+```
+
+**Faça 2 ou 3 classes, de hierarquias diferentes, implementarem a interface.** Foram feitas três implementações:
+
+* `Carro` (hierarquia `Carro`, `Fiat`, `Toyota`): liga e desliga o motor.
+* `Farol`: acende e apaga.
+* `Radio`: toca e desliga.
+
+**No `main`, crie um array da interface e chame os métodos polimorficamente.** Foi criado um array do tipo `Ligavel` com objetos das três hierarquias, e a mesma chamada produz um resultado diferente conforme o objeto real:
+
+```java
+Ligavel[] ligaveis = { fiat, toyota, new Farol(), new Radio() };
+
+for (Ligavel item : ligaveis) {
+    System.out.println(item.ligar());
+    System.out.println(item.desligar());
+}
+```
+
+```text
+Fiat Argo: motor ligado
+Fiat Argo: motor desligado
+Toyota Corolla: motor ligado
+Toyota Corolla: motor desligado
+Farol aceso
+Farol apagado
+Radio tocando
+Radio desligado
+```
+
+## Projeto Carro - Checklist Clean Code (Interfaces) - Aula 22/10/26
+
+A interface `Ligavel` foi conferida contra o checklist de Clean Code para interfaces:
+
+* **Nome descritivo:** `Ligavel` é um adjetivo que indica uma **capacidade** (poder ser ligado), como `Recarregavel`, `Voavel` e `Pagavel`.
+* **Convenção "able":** em inglês seria `Switchable`; em português, usamos o adjetivo terminado em "-vel", que tem a mesma função.
+* **Contrato claro:** `ligar()` e `desligar()` fazem parte de um único comportamento coeso (ligar e desligar um objeto), sem misturar responsabilidades aleatórias.
+* **Poucos métodos:** a interface tem apenas 2 métodos, o que facilita a implementação por qualquer classe (Interface Segregation Principle). Por isso `Farol` e `Radio` precisam implementar só o que realmente fazem.
+* **Documentação:** a interface foi documentada com JavaDoc, explicando **o que esperar de quem a implementa**: retornar uma mensagem descrevendo o que aconteceu, nunca retornar `null` nem vazio e não lançar exceção se for chamado mais de uma vez seguida.
+
+```java
+/**
+ * Contrato para objetos que podem ser LIGADOS e DESLIGADOS.
+ *
+ * <p>Quem implementa esta interface deve garantir que:
+ * <ul>
+ *   <li>{@link #ligar()} coloque o objeto em funcionamento e retorne uma mensagem
+ *       descrevendo o que aconteceu;</li>
+ *   <li>{@link #desligar()} interrompa o funcionamento e retorne uma mensagem
+ *       descrevendo o que aconteceu;</li>
+ *   <li>as mensagens retornadas nunca sejam {@code null} nem vazias;</li>
+ *   <li>nenhum dos dois metodos lance excecao se for chamado mais de uma vez seguida.</li>
+ * </ul>
+ */
+public interface Ligavel {
 ```
 
 ## Projeto Carro - Pergunta de Reflexão "Clean Code" - Aula 10/09/26
@@ -460,3 +616,13 @@ Neste projeto, isso se aplica aos atributos `modelo` e `tanque` de `Carro`. As c
 * Resolução do microdesafio "Transforme em Abstrata" com a análise da classe `Carro`.
 * Teste de criação de objeto da classe abstrata, que gerou erro de compilação.
 * Adição da resposta do microdesafio ao README.
+
+### 22/10/26
+* Aplicação do conceito de interface.
+* Criação da interface `Ligavel` com os métodos `ligar()` e `desligar()`.
+* Implementação de `Ligavel` na classe `Carro`, herdada por `Fiat` e `Toyota`.
+* Criação das classes `Farol` e `Radio`, de hierarquias diferentes, que também implementam `Ligavel`.
+* Atualização do `Main.java` com um array do tipo `Ligavel` para demonstrar o polimorfismo.
+* Resolução do microdesafio "Crie suas Interfaces" e adição da resposta ao README.
+* Aplicação do checklist de Clean Code para interfaces (nome descritivo, contrato coeso e poucos métodos).
+* Documentação da interface `Ligavel` com JavaDoc, explicando o que esperar de quem a implementa.

@@ -32,11 +32,6 @@ public class Main {
         fiat.abastecer(20); // 40 + 20 passaria de 50: deve ser ignorado
         System.out.println("\nTanque da Fiat apos tentar passar do limite: " + fiat.getTanque() + " L");
 
-        // ---------- Classe abstrata + polimorfismo ----------
-        // Carro e abstrata: "new Carro(...)" agora da ERRO de compilacao.
-        // Mas ainda podemos usar Carro como TIPO para guardar as filhas (Fiat e Toyota
-        // SAO Carro)
-        
         // ---------- Microdesafio: tentar criar um objeto da classe abstrata ----------
         // Descomentando a linha abaixo, o compilador mostra o ERRO e o projeto nao
         // roda:
@@ -45,12 +40,29 @@ public class Main {
         // Erro no VS Code: "Cannot instantiate the type Carro"
         // Por isso criamos os objetos pelas subclasses (Fiat e Toyota), que funcionam
         // normalmente.
+
+        // ---------- Classe abstrata + polimorfismo ----------
+        // Carro e abstrata: "new Carro(...)" agora da ERRO de compilacao.
+        // Mas ainda podemos usar Carro como TIPO para guardar as filhas (Fiat e Toyota
+        // SAO Carro)
         Carro[] carros = { fiat, toyota };
 
         System.out.println("\nPOLIMORFISMO");
         for (Carro c : carros) {
             // Mesmas chamadas, resultado diferente conforme o objeto real
             System.out.println(c.getModelo() + " -> " + c.buzinar() + " | Tipo: " + c.exibirTipo());
+        }
+
+        // ---------- Interface + polimorfismo (microdesafio) ----------
+        // Array do tipo da INTERFACE: guarda objetos de hierarquias DIFERENTES
+        // (Fiat e Toyota vem de Carro; Farol e Radio nao tem relacao nenhuma com Carro)
+        Ligavel[] ligaveis = { fiat, toyota, new Farol(), new Radio() };
+
+        System.out.println("\nINTERFACE LIGAVEL");
+        for (Ligavel item : ligaveis) {
+            // Mesma chamada (ligar/desligar), resultado diferente conforme o objeto real
+            System.out.println(item.ligar());
+            System.out.println(item.desligar());
         }
     }
 }
